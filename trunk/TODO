@@ -1,0 +1,54 @@
+Things TO-DO on QCrt & PGME:
+
+
+Current Build Instructions:
+
+	requires Turbo Pascal 7 and TP7's BCC make utility (included in TP7 bin dir)
+
+	make
+
+Bugs and Known Issues:
+
+	KeyPressed and Readkey are currently broken due to command translations.
+	Get/Set File Time/Attr in QDos not working.
+	Prevent TConfigFile AutoMerge getting from stuck in a loop if merging a previously
+		merged file.
+	
+Maybe Eventual Improvements:
+	
+	Extention Component.
+	Make KeyPressed and ReadKey translate Commands into Keypresses for backwards compatibility.	
+	Buffered File I/O, mainly reading in TAbstractFile. Maybe buffered writes to.
+	QCRT Get/Put Window, convert to optimized assembly.
+	UI Window, resize and dragging	
+	Make TComponent from non-visual TControl Elements and derive TControl from TComponent.
+	Error Dialog in TPathDialog when MakeDir fails.
+	UN/Tab UI Navigation and other stuff for Mouseless systems. 
+	Text Typing and special unhandled commands over Edit controls starts editing.
+	Other general perfomance enhancements.
+	Make PGM_Call into QIPC
+	Fade Out Before Hiding all windows (Background restored first if not cleared)
+	Add KeyValue Lookups to THelp.
+
+Todo PGME & QCrt: 
+
+	Help System!!!
+
+	Needed Controls.
+		Tree View
+		File Tree View
+		Scroll Window
+		Memo Edit
+		Binary Tree
+		MOTD
+		
+	Special Effects
+	
+	Verify FileMode is Read/Write for ReadOnly Access.
+	Verify Update or Refresh when Control changes.
+	
+	Music (PC Speaker Tones)
+
+	Theme Request Language
+	Language Request Font & Keyboard
+	
