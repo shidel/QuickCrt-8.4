@@ -29,11 +29,10 @@ Maybe Eventual Improvements:
 	Make PGM_Call into QIPC
 	Fade Out Before Hiding all windows (Background restored first if not cleared)
 	Add KeyValue Lookups to THelp.
+	Enhance TTextView with Line Wrapping and Horizontal Scrolling.
 	
 
 Todo PGME & QCrt: 
-
-	Add Text View ( Really a stripped down ListView )
 
 	Needed Controls.
 		Tree View
@@ -42,14 +41,8 @@ Todo PGME & QCrt:
 		Memo Edit
 		Binary Tree
 		MOTD
-		
+
 	Special Effects
-	
+
 	Verify FileMode is Read/Write for ReadOnly Access.
 	Verify Update or Refresh when Control changes.
-	
-	Music (PC Speaker Tones)
-
-	Theme Request Language
-	Language Request Font & Keyboard
-	
