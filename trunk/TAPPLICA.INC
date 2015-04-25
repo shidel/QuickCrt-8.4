@@ -49,6 +49,11 @@ type
 		procedure ApplyKeyboard( AConfig : PConfigFile ); virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		
+		procedure ApplySettings( AControl : PControl ); virtual;
+
+		procedure CreateAllForTemplate; virtual; 
+		{ Only used when making Templates, Slow and major memory hog.  }
+		
 		function GetCommandName( ACode : word ) : String; virtual;
 		function GetKeyName( ACode : TKeyValue ) : String; virtual;
 		function GetCommandCode( ACommand : string ) : word; virtual;
@@ -122,11 +127,13 @@ begin
 			FreeMem(FUserDAC, Sizeof(TDac));
 			FUserDAC := nil;
 		end;
+		
 	FTheme.Destroy;
 	FLanguage.Destroy;
 	FConfig.Destroy;
 	FKeyboard.Destroy;
 	FFont.Destroy;
+	
 	if Application = @Self then begin
 		{$I-}
 		Chdir(FOriginalPath);
@@ -137,6 +144,10 @@ begin
 	{$IFDEF DEVLOG}
 		WriteLog('MaxAvail ' + IntStr(MaxAvail) + ' / MemAvail ' + IntStr(MemAvail));
 	{$ENDIF}
+end;
+
+procedure TApplication.CreateAllForTemplate;
+begin
 end;
 
 procedure TApplication.Configure;
@@ -195,6 +206,13 @@ procedure TApplication.Idle;
 begin
 end;
 
+procedure TApplication.ApplySettings (AControl : PControl);
+begin
+	AControl^.ApplyLanguage(@FLanguage);
+	AControl^.ApplyTheme(@FTheme);
+	AControl^.ApplyKeyboard(@FKeyboard);
+end;
+
 procedure TApplication.Terminate;
 var
 	AEvent : TEvent;
@@ -231,10 +249,12 @@ begin
 		Move(FDefaultDAC^, FUserDAC^, Sizeof(TDac));
 	end;
 
-	ApplyLanguage(@FLanguage);
-	ApplyTheme(@FTheme);
-	ApplyKeyboard(@FKeyboard);
+	ApplySettings(@Self);
 	
+	{$IFDEF TEMPLATES}
+		CreateAllForTemplate;
+	{$ENDIF}
+
 	{$IFNDEF TEMPLATES} { If template mode then don't loop application }
 	CheckScroll := False;
 	CheckCursor := False;
