@@ -99,7 +99,7 @@ end;
 
 procedure THelp.SetCurrentBounds(AValue : TBounds);
 begin
-	if AValue.Height + 3 > FText.FItems.Count then begin
+	if (AValue.Height > FText.FItems.Count + 3) then begin
 		AValue.Height := FText.FItems.Count + 3;
 		if AValue.Height < 5 then AValue.Height := 5;
 	end;
