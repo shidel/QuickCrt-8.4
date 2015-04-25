@@ -116,10 +116,10 @@ begin
 	SetHelpText('This is a standard directory selection dialog box.');
 	AddHelpText('');
 	AddHelpText('You may use the dropdown path list to select one of the systems current');
-	AddHelpText('active directories. Or, you may type in one for direct access. Also, ' );
+	AddHelpText('active directories. Or, you may type in one for direct access. Also,' );
 	AddHelpText('recently entered paths are stored into the list for quick selection.');
 	AddHelpText('');
-	AddHelpText('When a specified directory does not exist, the Make Dir button will ' );
+	AddHelpText('When a specified directory does not exist, the Make Dir button will' );
 	AddHelpText('become available. ' );
 end;
 
