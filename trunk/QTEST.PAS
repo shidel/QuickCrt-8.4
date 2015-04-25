@@ -1,11 +1,11 @@
+{ Copyright 2015 Jerome Shidel }
+
 (* 
 		
 	This project and related files are subject to either the terms
 	specified in the included LICENSE.TXT file or the GNU GPLv2.0.
 	
 *)
-
-{ Copyright 1992-2015 Jerome Shidel }
 
 {$I QCRT.DEF}
 {$M 50000,0,655350} (* Memory: Largest Stack, No Minimum Free, Use All Ram *)

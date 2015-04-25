@@ -29,10 +29,11 @@ Maybe Eventual Improvements:
 	Make PGM_Call into QIPC
 	Fade Out Before Hiding all windows (Background restored first if not cleared)
 	Add KeyValue Lookups to THelp.
+	
 
 Todo PGME & QCrt: 
 
-	Help System!!!
+	Add Text View ( Really a stripped down ListView )
 
 	Needed Controls.
 		Tree View
