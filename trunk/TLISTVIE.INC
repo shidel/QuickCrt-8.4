@@ -191,7 +191,7 @@ begin
 	
 	FVScroll.SetMin(1);
 	FVScroll.SetMax(FItems.Count);
-	FVScroll.SetValue(FIndex);
+	FVScroll.SetValue(FIndex + 1);
 	AValue.Left := Width;
 	AValue.Top :=  1;
 	AValue.Width := 1;

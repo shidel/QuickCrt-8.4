@@ -19,7 +19,7 @@ type
     public { protected }
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public { protected }
-		FList : TListView;
+		FList : TTextView;
 		procedure SetCurrentBounds(AValue : TBounds); virtual;
 		procedure AddHelpFrom(AControl : PCOntrol);
 	public
@@ -189,8 +189,8 @@ begin
 end;
 
 procedure THelp.BuildHelp;
-var 
-	I : integer;
+{var 
+	I : integer; }
 begin
 	FList.ClearItems; 
 
