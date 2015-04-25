@@ -19,7 +19,7 @@ type
     public { protected }
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public { protected }
-		FList : TTextView;
+		FText : TTextView;
 		procedure SetCurrentBounds(AValue : TBounds); virtual;
 		procedure AddHelpFrom(AControl : PCOntrol);
 	public
@@ -74,22 +74,20 @@ begin
 	FTitle.SetTextAttr($74);
 	FTitle.OnFormat := FormatHelpTitle;
 	
-	Bounds(1, 1, 60, Hi(ScreenMax) - 1,B);
+	Bounds(1, 1, 70, Hi(ScreenMax) - 1,B);
 	SetBounds(B);	
 	
 	FStyle := bxSingle;
-	
-	Bounds(Width - 15,Height - 3, 12, 1, B);
 	SetAnchors(abTop or abBottom);
 
 	FAutoEndModal := True;
 	TextAttr := C or $08;
 	FVisible := False;
-	FList.Create(@Self, 'TEXT');
-	FList.SetFreeOnDestroy(False);
-	FList.SetAnchors(alClient);
-	FList.SetScrollEdge(True);
-	FList.Sorted := False;
+	FText.Create(@Self, 'TEXT');
+	FText.SetFreeOnDestroy(False);
+	FText.SetAnchors(alClient);
+	FText.SetScrollEdge(True);
+	FText.Sorted := False;
 	HelpSection := nil;
 	TextAttr := C;
 end;
@@ -101,6 +99,10 @@ end;
 
 procedure THelp.SetCurrentBounds(AValue : TBounds);
 begin
+	if AValue.Height + 3 > FText.FItems.Count then begin
+		AValue.Height := FText.FItems.Count + 3;
+		if AValue.Height < 5 then AValue.Height := 5;
+	end;
 	if Assigned(Parent) then begin
 		AValue.Left := (PControl(Parent)^.Width div 2) - (AValue.Width div 2) + 1;
 		AValue.Top := (PControl(Parent)^.Height div 2) - (AValue.Height div 2) + 1;
@@ -121,8 +123,9 @@ begin
 	StartDrawing;
 	BuildHelp; 
 	FinishDrawing;
+	SetCurrentBounds(FRBounds);
 	ShowModal;
-	FList.ClearItems;
+	FText.ClearItems;
 	HelpSection := nil;
 end;
 
@@ -138,7 +141,7 @@ var
 begin
 	GetCommandMap(CommandMap, CommandCount);
 	L := AControl^.FHelpList.First;
-	if Assigned(L) then FList.AddItem('');
+	if Assigned(L) then FText.AddItem('');
 	D[0].ID := fmtString;
 	D[0].StringValue := AControl^.GetNameID;
 	D[1].ID := fmtString;
@@ -157,7 +160,7 @@ begin
 			T := '';
 		if T = '' then begin
 			if S <> '' then begin
-				FList.AddItem(S);
+				FText.AddItem(S);
 				S := '';
 			end;
 		end;
@@ -167,15 +170,15 @@ begin
 		else
 			S := T;
 			
-		if S = '' then FList.AddItem('');
+		if S = '' then FText.AddItem('');
 		
-		while Length(S) > FList.Width do begin
-			W := FList.Width;
+		while Length(S) > FText.Width do begin
+			W := FText.Width;
 			while (W > 0) and (S[W] <> ' ') do dec(W);
-			if W = 0 then W := FList.Width;
+			if W = 0 then W := FText.Width;
 			T := Copy(S, 1, W);
 			S := LTrim(Copy(S, Length(T) + 1, Length(S)));				
-			FList.AddItem(T);
+			FText.AddItem(T);
 		end;
 
 		if Assigned(L) then 
@@ -192,11 +195,11 @@ procedure THelp.BuildHelp;
 {var 
 	I : integer; }
 begin
-	FList.ClearItems; 
+	FText.ClearItems; 
 
 	AddHelpFrom(HelpSection);
 	
 {	for I := 1 to 30 do
-		FList.AddItem('Extra Line: ' + IntStr(I)); }
+		FText.AddItem('Extra Line: ' + IntStr(I)); }
 end;
 {$ENDIF}
