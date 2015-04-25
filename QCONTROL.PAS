@@ -32,6 +32,7 @@ uses
 {$I TScrollBar.inc}
 {$I TSlider.inc}
 {$I TListView.inc}
+{$I TTextView.inc}
 {$I TCheckBox.inc}
 {$I TRadioButton.inc}
 {$I TToggle.inc}
@@ -111,6 +112,7 @@ uses QErrors, QBIOS, QDos, QFiles, QFmtStr, QSpeaker;
 {$I TScrollBar.inc}
 {$I TSlider.inc}
 {$I TListView.inc}
+{$I TTextView.inc}
 {$I TCheckBox.inc}
 {$I TRadioButton.inc}
 {$I TToggle.inc}
