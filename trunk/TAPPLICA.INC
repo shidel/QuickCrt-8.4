@@ -167,7 +167,7 @@ begin
 	{$ENDIF}
 	FLanguage.Create('Language');
 	FLanguage.SetFreeOnDestroy(False);
-	FLanguage.SetFileName(FConfig.GetValue('LANGUAGE', 'DEFAULT' + LanguageExt) );
+	FLanguage.SetFileName(FConfig.GetValue('LANGUAGE', 'DEFAULT' + LanguageExt));
 	FLanguage.Read;
 	{$IFDEF TEMPLATES}
 		AddComments(FLanguage, @LanguageComments);
@@ -199,7 +199,8 @@ begin
 		FKeyboard.GetValue('ID', 'USPC101');
 		FKeyboard.GetValue('NAME', 'US English 101-key PC Enhanced Keyboard');
 	{$ENDIF}
-	FFont.SetFileName(FConfig.GetValue('FONT', 'DEFAULT' + FontExt) );	
+	FFont.SetFileName(FConfig.GetValue('FONT', 'DEFAULT' + FontExt));
+	if FFont.GetFileName = '' then Halt(0);
 end;
 
 procedure TApplication.Idle;
@@ -267,7 +268,6 @@ begin
 				FadeOutDAC(0,256,FDefaultDAC^);
 		end;
 		
-	{$IFNDEF TEMPLATES}
 	if (FFont.GetFileName <> '') and (not FClrScr) then 
 		begin
 			Size := GetVideoSize;
@@ -277,9 +277,14 @@ begin
 			SetVideoPtr(Screen);
 			CopyFromVideo;
 			SetVideoPtr(Temp);
-			FFont.SetEnabled(True);
 		end;
-	{$ENDIF}
+
+	if FFont.GetFileName <> '' then 
+		begin
+			FFont.SetEnabled(True);
+			HideCursor;
+		end;
+
 	if FClrScr then begin
 		TextAttr := $07;
 		ClrScr;
