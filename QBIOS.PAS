@@ -18,7 +18,19 @@ interface
 		clNotSupported   = 1; { Floppy without Change-Line Support }
 		clSupported		 = 2; { Floppy with Change-Line Support }
 		clFixed			 = 3; { Fixed Disk }
-
+		
+	type
+	{ Get ROM Bios Font Pointer Constants as a set }
+		TROMFont = ( rf8x14, rf8x8, rfHigh8x8, rfAlt9x14, rf8x16, rfAlt8x16 );
+		{
+			0 = EGA 8x14
+			1 = 8x8 (Part 1), 2 = 8x8 (Part 2)
+			3 = 9x14 alternate
+			4 = VGA 8x16
+			5 = VGA 8x16 alternate
+			Pointer to Specified ROM Font
+		}
+		
 	type
 		TFloppyDescriptor = record
 			Cylinder, Head, Sector, Size : byte;
@@ -42,6 +54,7 @@ interface
 	function SetFloppyFormatMedia(Drive : byte; Tracks, Sectors : byte) : Pointer;
 	
 	procedure SetUserFont(Height : byte; FontPtr : Pointer); 
+	function GetROMFontPtr(Mode : TROMFont) : Pointer; 
 
 type
 	TDAC = array[0..255] of record
@@ -431,6 +444,25 @@ begin
 		LastTimer := TimerTick;
 		While LastTimer = TimerTick do;
 	end;
+end;
+
+function GetROMFontPtr(Mode : TROMFont) : Pointer; assembler;
+asm
+	MOV  BH, Mode
+	ADD  BH, 02h
+	MOV  AX, 1130h
+	PUSH ES
+	PUSH BP
+	INT  10h
+	{ CX Current Font Height }
+	{ DL Screen Rows }
+	MOV  AX, BP
+	MOV	 DX, ES
+	POP  BP
+	POP  ES
+{	LES  BX, DWORD PTR A
+	MOV  ES:[BX], CX
+	MOV  ES:[BX + 2], DX }
 end;
 
 end.

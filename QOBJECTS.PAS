@@ -16,7 +16,7 @@ interface
 
 uses 
    {$IFDEF DEVLOG} QLog, {$ENDIF} 
-	QCrt, QStrings, QClass;
+	QCrt, QStrings, QClass, QBIOS;
 	
 const { Anchor Bounds and Align Control Constants. Anchors can override Alignments }
 	abNone   = $0000;
@@ -116,7 +116,7 @@ implementation
 
 {$DEFINE IMPLEMENTATION}
 
-uses QErrors, QBIOS, QDos, QFiles, QFmtStr;
+uses QErrors, QDos, QFiles, QFmtStr;
 
 	var
 		OldExitProc : pointer;
