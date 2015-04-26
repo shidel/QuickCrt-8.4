@@ -309,6 +309,24 @@ begin
 			FHeight := 16;
 		end;
 	end;
+	if Pos('DOSBOX', UCase(PascalStr(Ptr(65024, 14)^))) > 0 then begin
+		FHeader.Add(New(PListItem, Create('COPYRIGHT=' + PascalStr(Ptr(65024, 14)^) )));
+		FHeader.Add(New(PListItem, Create('AUTHOR=' + PascalStr(Ptr(65024, 14)^) )));
+		FHeader.Add(New(PListItem, Create('VERSION=' + PascalStr(Ptr(65030, 1)^) )));
+		FHeader.Add(New(PListItem, Create('URL=http://www.dosbox.com')));
+		FHeader.Add(New(PListItem, Create('LICENSE=unknown')));		
+		FHeader.Add(New(PListItem, Create('LURL=http://www.dosbox.com')));		
+		FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));		
+	end else begin
+		FHeader.Add(New(PListItem, Create('COPYRIGHT=unknown' )));
+		FHeader.Add(New(PListItem, Create('AUTHOR=unknown' )));
+		FHeader.Add(New(PListItem, Create('VERSION=1.0.0')));		
+		FHeader.Add(New(PListItem, Create('URL=')));		
+		FHeader.Add(New(PListItem, Create('LICENSE=GNU GENERAL PUBLIC LICENSE, Version 2')));		
+		FHeader.Add(New(PListItem, Create('LURL=http://www.gnu.org/licenses/gpl-2.0.txt')));		
+		FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));		
+	end;
+	
 	FFontSize := FHeight * 256;
 	if not MemCheck(FFontSize) then begin
 		FreeFont;

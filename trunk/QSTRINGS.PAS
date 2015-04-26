@@ -114,6 +114,8 @@ function  StrPtr(const S : String) : PString;
 function  PtrStr(const P : PString) : String;
 procedure FreeStr(var P : PString);
 
+function PascalStr(const AsciiZ) : String;
+
 implementation
 
   function NextPos ( SubStr : String; S : String; StartPos : byte ) : byte;
@@ -778,6 +780,23 @@ begin
 	end else begin
 		PullChars := Copy(S, 1, Count);
 		S := Copy(S, Count + 1, Length(S));
+	end;
+end;
+
+function PascalStr(const AsciiZ) : String;
+type
+	AsciiZStr = array[0..$FF] of char;
+var
+	I : integer;
+	S : String;
+begin
+	PascalStr := '';
+	I := 0;
+	while (I <= 254) and (AsciiZStr(AsciiZ)[I] <> #0) do Inc(I);
+	if I <= 254 then begin
+		Move(AsciiZ, S[1], I);
+		S[0] := Chr(I);
+		PascalStr := S;
 	end;
 end;
 
