@@ -179,17 +179,17 @@ var
 begin
 	if Sorted and Assigned(FLastFound) then begin
 		P := FLastFound;
-		while Assigned(P) and (P^.GetNameID >= AValue) do
+		while Assigned(P) and (P^.GetNameID >= AValue) and (Assigned(P^.Prior)) do
 			P := P^.Prior;
 		while Assigned(P) and (P^.GetNameID < AValue) do
 			P := P^.Next;
 		if Assigned(P) and (P^.GetNameID <> AValue) then
 			P := nil;
-	end else begin
+	end else begin 
 		P := First;
 		while Assigned(P) and (P^.GetNameID <> AValue) do
 			P := P^.Next;
-	end;
+	end; 
 	FLastFound := P;
 	FindID := FLastFound;
 end;
