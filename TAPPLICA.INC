@@ -174,7 +174,6 @@ begin
 		FLanguage.OpenSection('*');
 		FLanguage.GetValue('TYPE', ftLanguage);
 		FLanguage.GetValue('ID', 'en_US');
-		FLanguage.GetValue('NAME', 'US English');
 	{$ENDIF}
 	FLanguage.GetValue('NAME', 'US English');
 	FFileDateFmt := FLanguage.GetValue('FILE.DATE', '0[X3.2],1[L2],2[Z2];%1/%2/%0');
