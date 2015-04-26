@@ -30,6 +30,9 @@ Maybe Eventual Improvements:
 	Make PGM_Call into QIPC
 	Add KeyValue Lookups to THelp.
 	Enhance TTextView with Line Wrapping and Horizontal Scrolling.
+	Add to TControl AdjustSize method for Aligning to Bottom when Anchored at Top. 
+	Same goes for Aligning to Left when Anchored at Right.
+	Also, change aligning method to align to sibling controls not just parent.
 	
 	Develop QCRT 9: (Would/Will be a major undertaking)
 		Window drawing, not just screen drawing. 
