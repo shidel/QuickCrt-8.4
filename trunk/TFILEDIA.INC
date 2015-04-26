@@ -153,7 +153,6 @@ begin
 				UpdateButtons;
 			end;
 		end;
-		
 end;
 
 procedure TFileDialog.UpdateButtons;
