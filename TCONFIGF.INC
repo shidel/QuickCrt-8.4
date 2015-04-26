@@ -23,7 +23,7 @@ type
 		FFileName : String;
 		FList : TListItem;
 		FModified : boolean;
-		FKey : PListItem;
+		FSectionKey : PListItem;
 		FIsValid : boolean;
 		FAutoAdd : boolean;
 		FAutoMerge : boolean;
@@ -70,7 +70,7 @@ begin
 	FList.Create('ROOT');
 	FList.SetFreeOnDestroy(False);
 	FList.Sorted := True;
-	FKey := nil;
+	FSectionKey := nil;
 	FIsValid := false;
 	FAutoAdd := false;
 	FAutoMerge := True;
@@ -173,7 +173,7 @@ var
 	R : boolean;
 	Merge : String;
 begin
-	FKey := nil;
+	FSectionKey := nil;
 	FIsValid := False;
 	FModified := False;
 	if FAutoClear then FList.Clear;
@@ -274,20 +274,20 @@ end;
 procedure TConfigFile.OpenSection ( AValue : String ); 
 begin
 	AValue := Trim(uCase(AValue));
-	if Assigned(FKey) and (FKey^.GetNameID = AValue) then exit;
-	FKey := FList.FindID(AValue);
-	if not assigned(FKey) then begin
-		FKey := New(PListItem, Create(AValue));
-		FKey^.Sorted := True;
-		FList.Add(FKey);
-		FKey := FList.FindID(AValue);
+	if Assigned(FSectionKey) and (FSectionKey^.GetNameID = AValue) then exit;
+	FSectionKey := FList.FindID(AValue);
+	if not assigned(FSectionKey) then begin
+		FSectionKey := New(PListItem, Create(AValue));
+		FSectionKey^.Sorted := True;
+		FList.Add(FSectionKey);
+		FSectionKey := FList.FindID(AValue);
 	end;
 end;
 
 function TConfigFile.FindKey ( AItem : String ) : PListItem; 
 begin
-	if Assigned(FKey) then
-		FindKey := FKey^.FindID(UCase(Trim(AItem)))
+	if Assigned(FSectionKey) then
+		FindKey := FSectionKey^.FindID(UCase(Trim(AItem)))
 	else
 		FindKey := nil;
 end;
@@ -314,11 +314,11 @@ procedure TConfigFile.SetValue(AItem, AValue : String);
 var
 	P : PListItem;
 begin
-	if not assigned(FKey) then exit;
+	if not assigned(FSectionKey) then exit;
 	P := FindKey(AItem);
 	if not Assigned(P) then begin
 		P := New(PListItem, Create(UCase(Trim(AItem))));
-		FKey^.Add(P);
+		FSectionKey^.Add(P);
 	end;
 	P^.Clear;
 	P^.Add(New(PListItem, Create(AValue)));
@@ -333,8 +333,8 @@ var
 	I, L : integer;
 	P : PListItem;
 begin
-	if Not Assigned(FKey) then exit;
-	P := FKey^.FindID(UCase(Trim(AItem)));
+	if Not Assigned(FSectionKey) then exit;
+	P := FSectionKey^.FindID(UCase(Trim(AItem)));
 	if (not assigned(P)) or (not assigned(P^.First)) then begin
 		{$IFDEF TEMPLATES}
 		SetInts(AItem, AInts, ACount);
