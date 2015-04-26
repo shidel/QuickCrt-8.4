@@ -46,7 +46,7 @@ const
 	);
 	
 const
-	DefaultCommandNamesMax = 60;
+	DefaultCommandNamesMax = 61;
 	DefaultCommandNames : array[0..DefaultCommandNamesMax] of Str25 = (
 		{ System/Environment Commands }
 		'None=$0000',
@@ -94,12 +94,14 @@ const
 		{ Special Commands }
 		'CharMap=$0300',
 		'MakeDir=$0301',
-		'OpenFile=$0302',
-		'SaveFile=$0303',
-		'SaveFileAs=$0304',
-		'CloseFile=$0305',
-		'InfoOnFile=$0306',
-		'About=$0307',
+		'NewFile=$0302',
+		'OpenFile=$0303',
+		'SaveFile=$0304',
+		'SaveFileAs=$0305',
+		'CloseFile=$0306',
+		'InfoOnFile=$0307',
+		
+		'About=$0310',
 		
 		
 		{ Modal Commands }

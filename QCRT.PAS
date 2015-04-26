@@ -233,12 +233,13 @@ interface
 	{ Special Commands }
 	cmCharMap		= $0300; 
 	cmMakeDir 		= $0301;
-	cmOpenFile		= $0302;
-	cmSaveFile		= $0303;
-	cmSaveFileAs	= $0304;
-	cmCloseFile		= $0305;
-	cmFileInfo		= $0306;
-	cmAbout			= $0307;
+	cmNewFile		= $0302;
+	cmOpenFile		= $0303;
+	cmSaveFile		= $0304;
+	cmSaveFileAs	= $0305;
+	cmCloseFile		= $0306;
+	cmFileInfo		= $0307;
+	cmAbout			= $0310;
 		
 	{ Modal Result Commands }
 	cmOK			= $0400;
