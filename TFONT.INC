@@ -168,7 +168,7 @@ begin
 		end;	
 	end;
 	
-	if Success then begin
+	if Success and Assigned(FHeader.First) and (S <> '') then begin
 		S := '';
 		F.PutString(S);
 		Success := (IOResult = 0); { Must be 8x?? font}						
@@ -326,12 +326,14 @@ begin
 		FHeader.Add(New(PListItem, Create('LURL=http://www.gnu.org/licenses/gpl-2.0.txt')));		
 		FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));		
 	end;
+	FHeader.Add(New(PListItem, Create('')));		
 	
 	FFontSize := FHeight * 256;
 	if not MemCheck(FFontSize) then begin
 		FreeFont;
 		Exit;
 	end;
+	
 	GetMem(FFontPtr, FFontSize);
 	P := GetROMFontPtr(AFont);
 	Move(P^, FFontPtr^, FFontSize);
