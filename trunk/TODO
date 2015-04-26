@@ -13,6 +13,7 @@ Bugs and Known Issues:
 	Get/Set File Time/Attr in QDos not working.
 	Prevent TConfigFile AutoMerge getting from stuck in a loop if merging a previously
 		merged file.
+	Draw behind other windows, prob requires QCrt 9.
 	
 Maybe Eventual Improvements:
 	
@@ -21,16 +22,18 @@ Maybe Eventual Improvements:
 	Buffered File I/O, mainly reading in TAbstractFile. Maybe buffered writes to.
 	QCRT Get/Put Window, convert to optimized assembly.
 	UI Window, resize and dragging	
-	Make TComponent from non-visual TControl Elements and derive TControl from TComponent.
+	Move Non-visual stuff from TControl into TComponent.
 	Error Dialog in TPathDialog when MakeDir fails.
 	UN/Tab UI Navigation and other stuff for Mouseless systems. 
 	Text Typing and special unhandled commands over Edit controls starts editing.
 	Other general perfomance enhancements.
 	Make PGM_Call into QIPC
-	Fade Out Before Hiding all windows (Background restored first if not cleared)
 	Add KeyValue Lookups to THelp.
 	Enhance TTextView with Line Wrapping and Horizontal Scrolling.
 	
+	Develop QCRT 9: (Would/Will be a major undertaking)
+		Window drawing, not just screen drawing. 
+		Better mouse Antiflicker that will test position and only hide if needed.
 
 Todo PGME & QCrt: 
 
