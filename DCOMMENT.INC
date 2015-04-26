@@ -16,9 +16,9 @@ var
 begin
 	AConfig.OpenSection('#');
 	S := AConfig.GetValue('#', '');
-	if Assigned(AConfig.FKey) and (S = '') then begin
+	if Assigned(AConfig.FSectionKey) and (S = '') then begin
 		AConfig.SetValue('#', 'Notes:');
-		AConfig.FKey^.Sorted := False;
+		AConfig.FSectionKey^.Sorted := False;
 		P := AConfig.FindKey('#');
 		S := '';
 		C := Ptr(Seg(Comments^), Ofs(Comments^)); {first is RETF, but it will be skipped}
@@ -35,7 +35,7 @@ begin
 				S := S + C^;
 			end;			
 		until C^ = #$00;
-		{AConfig.FKey^.Add(P);}
+		{AConfig.FSectionKey^.Add(P);}
 	end;
 end;
 

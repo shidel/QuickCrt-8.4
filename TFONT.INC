@@ -40,6 +40,7 @@ type
 		function GetHeight : integer; virtual;
 		function GetWidth : integer; virtual;
 		function GetHeader : PListItem; virtual;
+		function GetSize : integer; virtual;
 		procedure Clear; virtual;
 		procedure CopyROMFont( AFont : TROMFont ); virtual;
 	end;
@@ -252,6 +253,13 @@ begin
 	GetHeader := @FHeader;
 end;
 
+function TFont.GetSize : integer;
+begin
+	if Assigned(FFontPtr) then
+		GetSize := FFontSize
+	else
+		GetSize := -1;
+end;
 procedure TFont.Clear;
 begin
 	FreeFont;

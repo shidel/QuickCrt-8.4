@@ -200,7 +200,6 @@ begin
 		FKeyboard.GetValue('NAME', 'US English 101-key PC Enhanced Keyboard');
 	{$ENDIF}
 	FFont.SetFileName(FConfig.GetValue('FONT', 'DEFAULT' + FontExt));
-	if FFont.GetFileName = '' then Halt(0);
 end;
 
 procedure TApplication.Idle;
