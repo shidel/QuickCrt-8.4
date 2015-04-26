@@ -204,7 +204,10 @@ begin
 end;
 
 procedure TListView.CheckMarkers;
+var
+	LI : integer;
 begin
+	LI := FIndex;
 	if (FTop = nil) or (FCurrent = nil) then begin
 		FTop := FItems.First;
 		if ((Not FAllowNull) and (FCurrent = nil)) or (FNoNill) then 
@@ -215,7 +218,7 @@ begin
 			FIndex := -1;
 	end;
 	if (FLB.Width <> FCBounds.Width) or (FLB.Height <> FCBounds.Height) or 
-	(FVScroll.GetMax <> FItems.Count) then AdjustBars;
+	(FVScroll.GetMax <> FItems.Count) or (LI <> FIndex) then AdjustBars;
 end;
 
 procedure TListView.SetBounds(AValue : TBounds); 
@@ -670,6 +673,9 @@ begin
 	FCurrent := nil;
 	FItems.Clear;
 	FIndex := -1;
+	FVScroll.SetMin(1);
+	FVScroll.SetMax(1);
+	FVScroll.SetValue(1);
 	AdjustSize;
 	Update;
 end;
