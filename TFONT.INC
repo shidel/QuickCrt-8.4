@@ -218,7 +218,7 @@ begin
 	FFileName := '';
 end;
 
-function TFont.GetEnabled : boolean ;
+function TFont.GetEnabled : boolean;
 begin
 	GetEnabled := FEnabled;
 end;
@@ -229,9 +229,11 @@ begin
 	if AValue then begin
 		if not Assigned(FFontPtr) then exit;
 		
-		SetUserFont(FHeight, FFontPtr);
-		InitQCrt;
-		
+		{ SetUserFont(FHeight, FFontPtr);
+		InitQCrt; }
+		UserFontSize := FHeight;
+		UserFontPtr := FFontPtr;
+		TextMode(CO80 or FontUser);
 	end else begin
 		TextMode(CO80);
 	end;
