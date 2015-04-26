@@ -162,8 +162,8 @@ begin
 	FBOk.SetEnabled(
 		DirExists(FPath.FEdit.GetCaption) and (FFile.GetCaption <> '') and (
 			(
-				(not FMustExist) and 
-				(Not DirExists(Dir(FPath.FEdit.GetCaption) + FFile.GetCaption))
+				(not FMustExist) 
+{				and (Not DirExists(Dir(FPath.FEdit.GetCaption) + FFile.GetCaption)) }
 			) or (			
 				FileExists(Dir(FPath.FEdit.GetCaption) + FFile.GetCaption)				
 			)
