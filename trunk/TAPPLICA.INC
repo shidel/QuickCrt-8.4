@@ -471,8 +471,8 @@ begin
 	
 	{ Count them }
 	VCount := 0;
-	if Assigned(AConfig^.FKey) then begin
-		P := AConfig^.FKey^.First;
+	if Assigned(AConfig^.FSectionKey) then begin
+		P := AConfig^.FSectionKey^.First;
 		while Assigned(P) do begin
 			T := P^.First;
 			while Assigned(T) do begin
@@ -485,10 +485,10 @@ begin
 
 	{ Create KeyMap  }
 	PMap := nil;
-	if Assigned(AConfig^.FKey) then begin
+	if Assigned(AConfig^.FSectionKey) then begin
 		GetMem(PMap, SizeOf(TCodeMapEntry) * VCount);
  		VCount := 0;
-		P := AConfig^.FKey^.First;
+		P := AConfig^.FSectionKey^.First;
 		while Assigned(P) do begin
 			T := P^.First;
 			Key := P^.GetNameID;
@@ -560,8 +560,8 @@ begin
 	
 	{ Count them }
 	VCount := 0;
-	if Assigned(AConfig^.FKey) then begin
-		P := AConfig^.FKey^.First;
+	if Assigned(AConfig^.FSectionKey) then begin
+		P := AConfig^.FSectionKey^.First;
 		while Assigned(P) do begin
 			T := P^.First;
 			while Assigned(T) do begin
@@ -574,10 +574,10 @@ begin
 
 	{ Create Command Map }
 	PMap := nil;
-	if Assigned(AConfig^.FKey) then begin
+	if Assigned(AConfig^.FSectionKey) then begin
 		GetMem(PMap, SizeOf(TCodeMapEntry) * VCount);
  		VCount := 0;
-		P := AConfig^.FKey^.First;
+		P := AConfig^.FSectionKey^.First;
 		while Assigned(P) do begin
 			T := P^.First;
 			Key := IntStr(GetCommandCode(UCase(P^.GetNameID)));
