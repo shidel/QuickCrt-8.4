@@ -171,7 +171,7 @@ begin
 	if Success and Assigned(FHeader.First) and (S <> '') then begin
 		S := '';
 		F.PutString(S);
-		Success := (IOResult = 0); { Must be 8x?? font}						
+		Success := (IOResult = 0); { Header text must be ended with only one blank line }						
 	end;	
 	if Success then begin
 		F.WriteByte(FWidth);
