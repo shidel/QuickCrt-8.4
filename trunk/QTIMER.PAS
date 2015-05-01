@@ -17,6 +17,7 @@ uses QCrt;
 
 	function ScheduleEvent(Event : TEvent; ms : longInt) : boolean;
 	function ScheduleCommand(Command : word; Sender : Pointer; ms : longInt) : boolean;
+	function ScheduleSystem(Command : word; Sender : Pointer; ms : longInt) : boolean;
 
 {$UNDEF INTERFACE}
 
@@ -81,6 +82,17 @@ begin
 	Event.Command := Command;
 	Event.InfoPtr := Sender;
 	ScheduleCommand := ScheduleEvent(Event, ms);
+end;
+
+function ScheduleSystem(Command : word; Sender : Pointer; ms : longInt) : boolean;
+var
+	Event : TEvent;
+begin
+	ClearEvent(Event);
+	Event.What := evSystem;
+	Event.Command := Command;
+	Event.InfoPtr := Sender;
+	ScheduleSystem := ScheduleEvent(Event, ms);
 end;
 
 procedure IdleTimerUnit; far;

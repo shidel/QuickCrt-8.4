@@ -608,6 +608,7 @@ interface
   procedure GetEvent(var Event : TEvent);
   function  PutEvent(var Event : TEvent) : boolean;	
   function  PutCommand(AValue : word; ASender : Pointer) : boolean;	
+  function  PutSystem(AValue : word; ASender : Pointer) : boolean;	
 
 { Text input functions }
   function EditLn ( var Dest : String; MaxLen, MaxWide : Byte ) : boolean;
@@ -1132,6 +1133,17 @@ end;
   	PutCommand := PutEvent(Temp);
   end;
 
+  function PutSystem(AValue : word; ASender : pointer) : boolean;
+  var
+  	Temp : TEvent;
+  begin
+  	ClearEvent(Temp);
+  	Temp.InfoPtr := ASender;
+  	Temp.What := evSystem;
+  	Temp.Command := AValue;
+  	PutSystem := PutEvent(Temp);
+  end;
+  
 (* Internal Keyboard Routines *)
   function ReadKeyboardStd : word; assembler;
     asm
