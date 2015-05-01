@@ -49,7 +49,7 @@ procedure SpeakerOn;
 begin
 	State := True;
 	if CSong <> '' then begin
-		PutCommand(cmSpeaker, nil);
+		PutSystem(cmSpeaker, nil);
 		Playing := True;
 	end;
 end;
@@ -65,7 +65,7 @@ procedure SpeakerPlay(ASong : String);
 begin
 	NoSound;
 	CSong := ASong;
-	PutCommand(cmSpeaker, nil);
+	PutSystem(cmSpeaker, nil);
 	Playing := True;
 end;
 	
@@ -85,7 +85,7 @@ begin
 		Exit;
 	end;
 	if StrInt(Note) = 0 then NoSound else Sound(StrInt(Note));
-	ScheduleCommand(cmSpeaker, nil, StrInt(Time));
+	ScheduleSystem(cmSpeaker, nil, StrInt(Time) * 55);
 	Playing := True;
 end;
 

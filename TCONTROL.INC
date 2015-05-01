@@ -717,7 +717,7 @@ end;
 
 procedure TControl.CheckLocal(var AEvent : TEvent);
 begin
-	if (AEvent.What = evCommand) and (AEvent.Command = cmSpeaker) then begin
+	if (AEvent.What = evSystem) and (AEvent.Command = cmSpeaker) then begin
 		ClearEvent(AEvent);
 		QSpeaker.SpeakerNext;
 		exit;
@@ -812,7 +812,7 @@ var
 	{ Hold : TEvent; }
 begin
 	T := nil;
-	if Assigned(Application) and Assigned(Application^.FFocused) and (AEvent.What = evCommand) then begin
+	if Assigned(Application) and Assigned(Application^.FFocused) and (AEvent.What and evMessage <> evNothing ) then begin
 		{ StartDrawing; }
 		P := Application^.FFocused;
 		{while Assigned(P) and not assigned(T) do begin}

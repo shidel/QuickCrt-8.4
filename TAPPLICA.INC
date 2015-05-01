@@ -111,8 +111,8 @@ begin
 	FClrScr := false;
 	FUseSound := True;
 
-	FStartTone := '200:200,300:200,400:200,500:200,0:200,400:200,500:500';
-	FEndTone := '500:100,100:100,300:100';
+	FStartTone := '200:3,300:3,400:3,500:3,0:3,400:3,500:6';
+	FEndTone := '500:1,100:1,300:1';
 end;
 
 destructor TApplication.Destroy; 
@@ -344,7 +344,7 @@ begin
 			While SpeakerState and SpeakerPlaying do begin
 				ClearEvent(Event);
 				GetEvent(Event);
-				if (Event.What = evCommand) and (Event.Command = cmSpeaker) then
+				if (Event.What = evSystem) and (Event.Command = cmSpeaker) then
 					SpeakerNext;
 			end;
 			SpeakerOff;
