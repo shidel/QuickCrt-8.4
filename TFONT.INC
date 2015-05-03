@@ -43,6 +43,7 @@ type
 		function GetSize : integer; virtual;
 		procedure Clear; virtual;
 		procedure CopyROMFont( AFont : TROMFont ); virtual;
+		procedure EmptyFont(AHeight : integer); virtual;
 	end;
 {$ENDIF}
 
@@ -162,13 +163,13 @@ begin
 	while Success and (Assigned(P)) do begin
 		if Success then begin
 			S := P^.GetNameID;
-			F.PutString(S);
+			if trim(S) <> '' then F.PutString(S);
 			Success := IOResult = 0;
 			P := P^.Next;
 		end;	
 	end;
 	
-	if Success and Assigned(FHeader.First) and (S <> '') then begin
+	if Success and Assigned(FHeader.First) then begin
 		S := '';
 		F.PutString(S);
 		Success := (IOResult = 0); { Header text must be ended with only one blank line }						
@@ -273,42 +274,56 @@ const
 var
 	P : Pointer;
 begin
-	FreeFont;
-	FWidth := 8;
-	FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));
 	case AFont of 
 		rf8x14 : begin
+			EmptyFont(14);
 			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x14 Font')));
 			FFileName := SytemFontPrefix + '814.FNT';
-			FHeight := 14;
 		end;
 		rfAlt9x14 : begin
+			EmptyFont(14);
 			FHeader.Add(New(PListItem, Create('TITLE=Alternate System 9x14 Font')));
 			FFileName := SytemFontPrefix + '914.FNT';
-			FHeight := 14;
 		end;
 		rf8x8 : begin 
+			EmptyFont(8);
 			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x8 Font')));
 			FFileName := SytemFontPrefix + '808.FNT';
-			FHeight := 8;
 		end;
 		rfHigh8x8 : begin 
+			EmptyFont(14);
 			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x8 Font')));
 			FFileName := SytemFontPrefix + '808.FNT';
 			AFont := rf8x8;
-			FHeight := 8;
 		end;
 		rf8x16 : begin
+			EmptyFont(16);
 			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x18 Font')));
 			FFileName := SytemFontPrefix + '816.FNT';
-			FHeight := 16;
 		end;
 		rfAlt8x16 : begin
+			EmptyFont(16);
 			FHeader.Add(New(PListItem, Create('TITLE=Alternate System 8x16 Font')));
 			FFileName := SytemFontPrefix + '816A.FNT';
-			FHeight := 16;
 		end;
 	end;
+	FWidth := 8;
+
+	P := GetROMFontPtr(AFont);
+	Move(P^, FFontPtr^, FFontSize);
+	if AFont = rf8x8 then begin
+		P := GetROMFontPtr(rfHigh8x8);
+		Move(Bytes(P^)[8 * $80], Bytes(FFontPtr^)[8 * $80], 8 * $1F );
+	end;
+end;
+
+procedure TFont.EmptyFont(AHeight : integer);
+begin
+	FreeFont;
+	FWidth := 8;
+	FHeight := AHeight;
+	FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));
+	
 	if Pos('DOSBOX', UCase(PascalStr(Ptr(65024, 14)^))) > 0 then begin
 		FHeader.Add(New(PListItem, Create('COPYRIGHT=' + PascalStr(Ptr(65024, 14)^) )));
 		FHeader.Add(New(PListItem, Create('AUTHOR=' + PascalStr(Ptr(65024, 14)^) )));
@@ -335,11 +350,6 @@ begin
 	end;
 	
 	GetMem(FFontPtr, FFontSize);
-	P := GetROMFontPtr(AFont);
-	Move(P^, FFontPtr^, FFontSize);
-	if AFont = rf8x8 then begin
-		P := GetROMFontPtr(rfHigh8x8);
-		Move(Bytes(P^)[8 * $80], Bytes(FFontPtr^)[8 * $80], 8 * $1F );
-	end;
+	FillChar(FFontPtr^, FFontSize, 0);
 end;
 {$ENDIF}

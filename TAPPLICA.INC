@@ -111,7 +111,7 @@ begin
 	FClrScr := false;
 	FUseSound := True;
 
-	FStartTone := '200:3,300:3,400:3,500:3,0:3,400:3,500:6';
+	FStartTone := '200:2,300:2,400:2,500:3,0:3,400:2,500:6';
 	FEndTone := '500:1,100:1,300:1';
 end;
 
