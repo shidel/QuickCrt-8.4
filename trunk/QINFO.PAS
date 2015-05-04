@@ -23,9 +23,9 @@ type
 	TInformation = object(TObject)
 	private
 		{$IFDEF STRINGPTRS}
-		PTypeID, PTitle, PFileName : PString;
+		PID, PTypeID, PTitle, PFileName : PString;
 		{$ELSE}
-		FTypeID, FTitle, FFileName : String;
+		FID, FTypeID, FTitle, FFileName : String;
 		{$ENDIF}
 		{$IFDEF TEMPLATES}
 		procedure CreatePMI; virtual;
@@ -38,12 +38,13 @@ type
 		function BaseName : String; virtual;
 		function Path : String; virtual;
 		function TypeID : String; virtual;
+		function Identity : String; virtual;
+		procedure SetIdentity (AValue : String); virtual;
 		function Title : String; virtual;
 		procedure SetTitle (AValue : String); virtual;
 		function FileName : String; virtual;
 		procedure SetFileName (AValue : String); virtual;
 	end;
-
 
 {$UNDEF INTERFACE}
 
@@ -89,10 +90,12 @@ begin
 		ExecName := GetExeName;
 	
 	{$IFDEF STRINGPTRS}
+	PID := StrPtr(Copy(ExecName, 1, Pos('.', ExecName) - 1));
 	PTypeID := StrPtr(AType);
 	PTitle := StrPtr(BaseName);
 	PFileName := StrPtr(ExecName);
 	{$ELSE}
+	FID := Copy(ExecName, 1, Pos('.', ExecName) - 1);
 	FTypeID := AType;
 	FTitle := BaseName;
 	FFileName := ExecName
@@ -109,6 +112,7 @@ begin
 	FreeStr(PFileName);
 	FreeStr(PTitle);
 	FreeStr(PTypeID);
+	FreeStr(PID);
 	{$ENDIF}
 end;
 
@@ -121,10 +125,14 @@ begin
 		Create('INFO');
 		SetFileName(Path + BaseName + InfoExt);
 		OpenSection('*');
-		SetValue('TYPE', ftInfo);
-		SetValue('CLASS', TypeID);
-		SetValue('TITLE', Title);
+		SetValue('ID', ftInfo);
+		SetValue('SECTION', Identity);
+		
+		OpenSection(Identity);
+		SetValue('CLASS', ftInfo);
+		SetValue('GROUP', TypeID);
 		SetValue('FILE', FileName);
+		SetValue('TITLE.EN_US', Title);
 		Write;
 		Destroy;
 	end;
@@ -147,6 +155,26 @@ begin
 		TypeID := PtrStr(PTypeID);
 	{$ELSE}
 		TypeID := FTypeID;
+	{$ENDIF}
+end;
+
+function TInformation.Identity : String; 
+begin
+	{$IFDEF STRINGPTRS}
+		Identity := PtrStr(PID);
+	{$ELSE}
+		Identity  := FID;
+	{$ENDIF}
+end;
+
+procedure TInformation.SetIdentity (AValue : String);
+begin
+	{$IFDEF STRINGPTRS}
+		if Assigned(PID) then
+			FreeStr(PID);
+		PID := StrPtr(AValue);
+	{$ELSE}
+		FID := AValue;
 	{$ENDIF}
 end;
 
@@ -189,8 +217,6 @@ begin
 		FFileName := AValue;
 	{$ENDIF}
 end;
-
-
 
 {$UNDEF IMPLEMENTATION}
 end.
