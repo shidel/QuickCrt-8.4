@@ -298,7 +298,7 @@ begin
 		end;
 		rf8x16 : begin
 			EmptyFont(16);
-			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x18 Font')));
+			FHeader.Add(New(PListItem, Create('TITLE=Default System 8x16 Font')));
 			FFileName := SytemFontPrefix + '816.FNT';
 		end;
 		rfAlt8x16 : begin
@@ -331,7 +331,6 @@ begin
 		FHeader.Add(New(PListItem, Create('URL=http://www.dosbox.com')));
 		FHeader.Add(New(PListItem, Create('LICENSE=unknown')));		
 		FHeader.Add(New(PListItem, Create('LURL=http://www.dosbox.com')));		
-		FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));		
 	end else begin
 		FHeader.Add(New(PListItem, Create('COPYRIGHT=unknown' )));
 		FHeader.Add(New(PListItem, Create('AUTHOR=unknown' )));
@@ -339,7 +338,6 @@ begin
 		FHeader.Add(New(PListItem, Create('URL=')));		
 		FHeader.Add(New(PListItem, Create('LICENSE=GNU GENERAL PUBLIC LICENSE, Version 2')));		
 		FHeader.Add(New(PListItem, Create('LURL=http://www.gnu.org/licenses/gpl-2.0.txt')));		
-		FHeader.Add(New(PListItem, Create('LANGUAGE=en_US')));		
 	end;
 	FHeader.Add(New(PListItem, Create('')));		
 	
