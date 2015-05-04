@@ -36,7 +36,8 @@ type
 		procedure SetCaption(AValue: String); virtual;
 		function GetCaption : String; virtual;
 		procedure SetReadOnly(AValue: Boolean); virtual;
-		function GetReadOnly : Boolean; virtual;		
+		function GetReadOnly : Boolean; virtual;
+		procedure ClearItems; virtual;		
 	end;
 {$ENDIF}
 
@@ -210,6 +211,11 @@ end;
 function TDropList.GetReadOnly : Boolean; 
 begin
 	GetReadOnly := FEdit.GetReadOnly;
+end;
+
+procedure TDropList.ClearItems;
+begin
+	FList.ClearItems;
 end;
 
 {$ENDIF}

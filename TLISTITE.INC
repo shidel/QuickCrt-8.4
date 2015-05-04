@@ -32,7 +32,7 @@ type
       function 	  GetIndex : integer; virtual;
       procedure   Add(AItem : PListItem); virtual;
       procedure   Remove(AItem : PListItem); virtual;
-      function    FindID( AValue : String) : PListItem; virtual;
+      function    FindID(AValue : String) : PListItem; virtual;
       procedure   DestroyData; virtual;
       procedure   Clear; virtual;
 	end;
