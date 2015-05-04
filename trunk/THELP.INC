@@ -134,7 +134,7 @@ var
 	CommandMap : PCodeMap;
 	CommandCount : word;
 	L : PListItem;
-	D : array[0..5] of TFormatData;
+	D : array[0..6] of TFormatData;
 	P : PControl;
 	S, T : String;
 	W : integer;
@@ -152,6 +152,13 @@ begin
 	D[3].StringValue := Application^.GetCommandName(AControl^.FRespond);
 	D[4].ID := fmtString;
 	D[4].StringValue := Application^.GetKeyName(AControl^.FKeyValue);
+	D[5].ID := fmtString;
+	if AControl^.ClassOf(class_TLabel) then
+		D[5].StringValue := Trim(PLabel(AControl)^.GetCaption)
+	else
+		D[5].StringValue := '';
+	if D[5].StringValue = '' then
+		D[5].StringValue := WCase(D[0].StringValue);
 	S := '';
 	while Assigned(L) or (S <> '') do begin
 		if Assigned(L) then
