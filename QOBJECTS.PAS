@@ -109,7 +109,6 @@ var
 	procedure StartDrawing;
 	procedure FinishDrawing;
 	
-	
 {$UNDEF INTERFACE}
 
 implementation
@@ -125,12 +124,12 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		PCurrent : Pointer;
 		PBuffer : Pointer;
 		PSize : integer;
+		ShowMemFlag : boolean;
 
 {$I DCOMMENTS.INC}
 {$I DKEYNAME.INC}
 {$I DKEYMAPS.INC}
 {$I DCOMMANDS.INC}
-
 
 	procedure Bounds(ALeft, ATop, AWidth, AHeight : integer; var AValue : TBounds);
 	begin
@@ -183,7 +182,13 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		PBuffer := nil;
 		SetKeyMap(nil, 0);
 		SetCommandMap(nil, 0);
-		{$IFDEF DEVINFO}
+		{$IFDEF MEMINFO}
+			ShowMemFlag := True;
+		{$ELSE}
+			ShowMemFlag := (MinMemAvail < 65535) or (MinMaxAvail < 10240) or
+				(MemAvail <> FirstMemAvail);
+		{$ENDIF}
+		if ShowMemFlag then begin
 			TextAttr := $0F;
 			if WhereX > 1 then WriteLn;
 			TextAttr := $07;
@@ -203,12 +208,12 @@ uses QErrors, QDos, QFiles, QFmtStr;
 			end;
 			TextAttr := $07;
 			WriteLn;
-			{$IFDEF TEMPLATES}
+		end;
+		{$IFDEF TEMPLATES}
 			if MemAvail <> FirstMemAvail then 
 				Delay(5000)
 			else
 				Delay(1500);
-			{$ENDIF}
 		{$ENDIF}
 	end;
 	
@@ -218,6 +223,7 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		DrawCounter := 0;
 		PBuffer := nil;
 		PSize := 0;
+		ShowMemFlag := False;
 		OldExitProc := ExitProc;
 		ExitProc := @ExitQObjects;
 		InitQCrtMaps;

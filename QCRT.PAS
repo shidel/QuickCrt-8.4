@@ -1000,7 +1000,7 @@ begin
 		KeyCount := 0;
 	end;
 	if Not Assigned(CodeMap) then exit;
-	if MaxAvail < Count * Sizeof(TCodeMapEntry) then halt(8);
+	if not MemCheck(Count * Sizeof(TCodeMapEntry)) then halt(8);
 	KeyCount := Count;
 	GetMem(Keymap, KeyCount * Sizeof(TCodeMapEntry));
 	Move(CodeMap^, KeyMap^, KeyCount * Sizeof(TCodeMapEntry)); 
@@ -1014,7 +1014,7 @@ begin
 		CommandCount := 0;
 	end;
 	if Not Assigned(CodeMap) then exit;
-	if MaxAvail < Count * Sizeof(TCodeMapEntry) then halt(8);
+	if not MemCheck(Count * Sizeof(TCodeMapEntry)) then halt(8);
 	CommandCount := Count;
 	GetMem(CommandMap, CommandCount * Sizeof(TCodeMapEntry));
 	Move(CodeMap^, CommandMap^, CommandCount * Sizeof(TCodeMapEntry)); 

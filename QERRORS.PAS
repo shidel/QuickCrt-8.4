@@ -242,7 +242,8 @@ begin
 	TextAttr := $07;
 	WriteLn;
 	WriteLn;
-	WriteLn(' Sorry, but the application has suffered a severe error and has been terminated.');		
+	WriteLn(' Sorry, but the application has suffered a severe error and has been terminated.');
+	MoveCursor;		
 end;
 
 

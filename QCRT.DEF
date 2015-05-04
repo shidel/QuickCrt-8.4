@@ -19,10 +19,14 @@
 
 { DEFINE DEVLOG}	{ Enables development logging/debugging system }
 
-{$DEFINE DEVINFO}
+{ DEFINE DEVINFO}
 
 {$IFDEF TEMPLATES}
 	{$DEFINE DEVINFO}
+{$ENDIF}
+
+{$IFDEF DEVINFO}
+	{$DEFINE MEMINFO}
 {$ENDIF}
 
 {$IFDEF DEVLOG}

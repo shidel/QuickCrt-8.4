@@ -51,9 +51,9 @@ type
 		
 		procedure ApplySettings( AControl : PControl ); virtual;
 
-		procedure CreateAllForTemplate; virtual; 
-		{ Only used when making Templates, Slow and major memory hog.  }
-		
+		procedure CreateAllDialogs(ConserveMemory : boolean); virtual; 
+		{ Only used when making Templates, Slow and major memory hog when not given true. }
+		procedure FreeDialog( var ADialog : PDialog ); virtual;
 		function GetCommandName( ACode : word ) : String; virtual;
 		function GetKeyName( ACode : TKeyValue ) : String; virtual;
 		function GetCommandCode( ACommand : string ) : word; virtual;
@@ -146,8 +146,17 @@ begin
 	{$ENDIF}
 end;
 
-procedure TApplication.CreateAllForTemplate;
+procedure TApplication.CreateAllDialogs;
 begin
+end;
+
+procedure TApplication.FreeDialog;
+begin
+	if not assigned(ADialog) then exit;
+	if Assigned(ADialog^.Parent) then 
+		PListItem(ADialog^.Parent)^.Remove(ADialog);
+	Dispose(ADialog, Destroy);
+	ADialog := nil;	
 end;
 
 procedure TApplication.Configure;
@@ -251,7 +260,7 @@ begin
 	ApplySettings(@Self);
 	
 	{$IFDEF TEMPLATES}
-		CreateAllForTemplate;
+		CreateAllDialogs(True);
 	{$ENDIF}
 
 	{$IFNDEF TEMPLATES} { If template mode then don't loop application }
