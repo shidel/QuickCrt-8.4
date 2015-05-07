@@ -46,7 +46,7 @@ const
 	);
 	
 const
-	DefaultCommandNamesMax = 61;
+	DefaultCommandNamesMax = 64;
 	DefaultCommandNames : array[0..DefaultCommandNamesMax] of Str25 = (
 		{ System/Environment Commands }
 		'None=$0000',
@@ -61,6 +61,7 @@ const
 		'Timer=$0009',
 		'Clock=$000A',
 		'Speaker=$000B',
+		'Search=$000C',
 		{ Keyboard Editing Commands }
 		'Tab=$0100',
 		'Untab=$0101',
@@ -100,6 +101,8 @@ const
 		'SaveFileAs=$0305',
 		'CloseFile=$0306',
 		'InfoOnFile=$0307',
+		'ExecuteFile=$0308',
+		'EditFile=$0309',
 		
 		'About=$0310',
 		

@@ -201,6 +201,7 @@ interface
     cmTimer			= $0009;
     cmClock			= $000A;
     cmSpeaker		= $000B;
+    cmSearch		= $000C;
   { Predefined Keyboard Editing Commands }
 	cmTab			= $0100;
 	cmUntab			= $0101;
@@ -239,6 +240,9 @@ interface
 	cmSaveFileAs	= $0305;
 	cmCloseFile		= $0306;
 	cmFileInfo		= $0307;
+	cmExecuteFile	= $0308;
+	cmEditFile		= $0309;
+	
 	cmAbout			= $0310;
 		
 	{ Modal Result Commands }

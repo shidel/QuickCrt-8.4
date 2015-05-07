@@ -125,12 +125,12 @@ begin
 		Create('INFO');
 		SetFileName(Path + BaseName + InfoExt);
 		OpenSection('*');
-		SetValue('ID', ftInfo);
+		SetValue('TYPE', ftInfo);
 		SetValue('SECTION', Identity);
 		
 		OpenSection(Identity);
-		SetValue('CLASS', ftInfo);
-		SetValue('GROUP', TypeID);
+		SetValue('CLASS', TypeID);
+		SetValue('GROUP', 'ETERNITY');
 		SetValue('FILE', FileName);
 		SetValue('TITLE.EN_US', Title);
 		Write;
