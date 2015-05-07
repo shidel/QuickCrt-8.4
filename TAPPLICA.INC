@@ -45,6 +45,7 @@ type
 		function GetClearScreen : boolean; virtual;
 		procedure SetClearScreen(AValue : boolean); virtual;
 		function GetConfigName : string; virtual;
+		procedure ApplyConfig( AConfig : PConfigFile ); virtual;
 		procedure ApplyLanguage( AConfig : PConfigFile ); virtual;
 		procedure ApplyKeyboard( AConfig : PConfigFile ); virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
@@ -57,8 +58,8 @@ type
 		function GetCommandName( ACode : word ) : String; virtual;
 		function GetKeyName( ACode : TKeyValue ) : String; virtual;
 		function GetCommandCode( ACommand : string ) : word; virtual;
-		procedure Idle; virtual;
 		procedure Configure; virtual;
+		procedure Idle; virtual;
 		procedure SetFocused(AControl : PControl); virtual;
 		function GetFocused : PControl; virtual;
 	end;
@@ -163,13 +164,6 @@ procedure TApplication.Configure;
 begin
 	FConfig.SetFileName(GetConfigName);
 	FConfig.Read;
-	FConfig.OpenSection('DISPLAY');
-	FClrScr := StrBool(FConfig.GetValue('CLEAR', BoolStr(FClrScr)));
-	FClearWindow := FClrScr;
-	FUseFader := StrBool(FConfig.GetValue('USE_FADER', BoolStr(FUseFader)));
-	FUseDAC := StrBool(FConfig.GetValue('USE_DAC', BoolStr(FUseDAC)));
-	FUseSound := StrBool(FConfig.GetValue('USE_SOUND', BoolStr(FUseSound)));
-	if Not FUseSound then SpeakerOff;
 	FConfig.OpenSection('*');
 	{$IFDEF TEMPLATES}
 		FConfig.GetValue('TYPE', ftConfig);
@@ -216,6 +210,7 @@ end;
 
 procedure TApplication.ApplySettings (AControl : PControl);
 begin
+	AControl^.ApplyConfig(@FConfig);
 	AControl^.ApplyLanguage(@FLanguage);
 	AControl^.ApplyTheme(@FTheme);
 	AControl^.ApplyKeyboard(@FKeyboard);
@@ -245,7 +240,10 @@ var
 begin
 	Screen := nil;
 	GetQCrtState(QCrtSettings);
+
 	Configure;
+	ApplySettings(@Self);
+
 	if FUseDac then begin
 		if Not MemCheck(Sizeof(TDac)) then Halt(erInsufficient_Memory);				
 		if not Assigned(FDefaultDAC) then
@@ -256,8 +254,6 @@ begin
 			GetMem(FUserDAC, Sizeof(TDac));
 		Move(FDefaultDAC^, FUserDAC^, Sizeof(TDac));
 	end;
-
-	ApplySettings(@Self);
 	
 	{$IFDEF TEMPLATES}
 		CreateAllDialogs(True);
@@ -678,6 +674,17 @@ end;
 function TApplication.GetFocused : PControl;
 begin
 	GetFocused := FFocused;
+end;
+
+procedure TApplication.ApplyConfig( AConfig : PConfigFile );
+begin
+	inherited ApplyConfig(AConfig);
+	FClrScr := StrBool(AConfig^.GetValue('CLEAR', BoolStr(FClrScr)));
+	FClearWindow := FClrScr;
+	FUseFader := StrBool(AConfig^.GetValue('USE_FADER', BoolStr(FUseFader)));
+	FUseDAC := StrBool(AConfig^.GetValue('USE_DAC', BoolStr(FUseDAC)));
+	FUseSound := StrBool(AConfig^.GetValue('USE_SOUND', BoolStr(FUseSound)));
+	if Not FUseSound then SpeakerOff;
 end;
 
 procedure TApplication.ApplyTheme( AConfig : PConfigFile );
