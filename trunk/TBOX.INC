@@ -41,6 +41,7 @@ begin
 	FShadow := True;
 	FStyle := bxDouble;
 	AdjustMargins;
+	FAttr.Click := FAttr.Normal;
 end;
 
 destructor TBox.Destroy;

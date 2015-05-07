@@ -58,6 +58,7 @@ begin
 	FVAlign := AlignMiddle;
 	OnFormat := nil;
 	FTextAlign := True;
+	FAttr.Click := FAttr.Normal;
 end;
 
 destructor TLabel.Destroy;

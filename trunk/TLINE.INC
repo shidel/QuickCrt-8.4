@@ -15,7 +15,7 @@ const
 	
 type
 	PLine = ^TLine;
-	TLine = object(TLabel)
+	TLine = object(TControl)
 	private
 		FStyle : integer;
     public { protected }
@@ -42,11 +42,12 @@ end;
 constructor TLine.Create(AParent : PControl; AName : String);
 begin
 	inherited Create(AParent, AName);
-	FUseCaption := false;
+{	FUseCaption := false; }
 
 	FClearWindow := false;
 	FStyle := lnSingle or lnHorizontal;
 	FTextAlign := False;
+	FAttr.Click := FAttr.Normal;
 end;
 
 destructor TLine.Destroy;
