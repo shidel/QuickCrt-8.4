@@ -132,6 +132,7 @@ type
 		procedure GetKeyCode(var AValue : TKeyValue; var AFlags : word); virtual;
 		procedure SetKeyCode(AKeyCode, AShiftCode, AFlags : word); virtual;
 		function GetAllowedOutside : boolean; virtual;
+		procedure ApplyConfig( AConfig : PConfigFile ); virtual;
 		procedure ApplyLanguage( AConfig : PConfigFile ); virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		procedure ApplyKeyboard( AConfig : PConfigFile ); virtual;
@@ -933,6 +934,11 @@ end;
 function TControl.GetAllowedOutside : boolean; 
 begin
 	GetAllowedOutside := FAllowOutside;
+end;
+
+procedure TControl.ApplyConfig( AConfig : PConfigFile );
+begin
+	AConfig^.OpenSection(GetPathID);
 end;
 
 procedure TControl.ApplyLanguage( AConfig : PConfigFile );
