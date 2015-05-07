@@ -199,6 +199,7 @@ procedure TWindow.SetCanClose(AValue : Boolean);
 begin
 	If AValue = FCanClose then exit;
 	FCanClose := AValue;
+{	FCloseBtn.SetVisible(AValue); }
 	Update;			
 end;
 

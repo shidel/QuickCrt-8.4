@@ -29,6 +29,7 @@ type
 		FFont : TFont;
 		FFocused, FMouseFocus : PControl;
 		FDefaultDAC, FUserDAC : Pointer;
+		FCanQuit : boolean;
 	{ User Config Stuff }
 		FClrScr,
 		FUseFader,
@@ -111,6 +112,7 @@ begin
 	FUserDAC := nil;
 	FClrScr := false;
 	FUseSound := True;
+	FCanQuit := True;
 
 	FStartTone := '200:2,300:2,400:2,500:3,0:3,400:2,500:6';
 	FEndTone := '500:1,100:1,300:1';
@@ -341,8 +343,9 @@ begin
 				WriteLog(TempStr);
 			end;
 			{$ENDIF}			
-			if (Event.What <> evCommand) or (Event.Command <> cmquit) then CheckEvent(Event);
-		until (Not FShown) or ((Event.What = evCommand) and (Event.Command = cmQuit)); 
+			if (Event.What <> evCommand) or (Event.Command <> cmQuit) then 
+				CheckEvent(Event);
+		until (Not FShown) or (FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit)); 
 		if FEndTone <> '' then begin
 			PurgeEvents;
 			SpeakerPlay(FEndTone);
