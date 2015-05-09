@@ -54,6 +54,8 @@ type
 		FTrigger, 	{ Command that is sent automatically when triggered, if FCommand is cmNone }
 		FCommand,   { FTrigger override to this command }
 		FRespond  : word; { Tells Control to respond to this Command like it was triggered }
+		
+{		FPreserve : boolean;}
 		FClearWindow : boolean;
 		FAutoSize : boolean;
 		
@@ -178,6 +180,7 @@ constructor TControl.Create;
 begin
 	inherited Create(AName);
 	FClearWindow := True;
+{	FPreserve := False;}
 	FHelpList.Create('HELP');
 	FAllowOutside := False;
 	FWindow.Left := 0;
@@ -593,23 +596,25 @@ begin
 	BeforeShow;
 	StartDrawing;
 	P := PControl(First);
-	if not Assigned(FBehind) then 
-		begin
-			if MaxAvail <= WindowSize(FWindow.Left, FWindow.Top, 
-			FWindow.Left + FWindow.Width - 1, FWindow.Top + FWindow.Height - 1) then
+{	if FPreserve then begin }
+		if not Assigned(FBehind) then 
 			begin
-				
-				Halt(erInsufficient_Memory); 
+				if MaxAvail <= WindowSize(FWindow.Left, FWindow.Top, 
+				FWindow.Left + FWindow.Width - 1, FWindow.Top + FWindow.Height - 1) then
+						Halt(erInsufficient_Memory); 
+				Window(1, 1, Lo(ScreenMax) + 1, Hi(ScreenMax) + 1);
+				FBSize := WindowSize(FWindow.Left, FWindow.Top, FWindow.Left + 
+				FWindow.Width - 1, FWindow.Top + FWindow.Height - 1);
+				GetMem(FBehind, FBSize );
+				GetWindow(FWindow.Left, FWindow.Top, FWindow.Left + FWindow.Width - 1, 
+				FWindow.Top + FWindow.Height - 1, FBehind^);
+				FShown := True;
+				UpdateWindow(True);
 			end;
-			Window(1, 1, Lo(ScreenMax) + 1, Hi(ScreenMax) + 1);
-			FBSize := WindowSize(FWindow.Left, FWindow.Top, FWindow.Left + 
-			FWindow.Width - 1, FWindow.Top + FWindow.Height - 1);
-			GetMem(FBehind, FBSize );
-			GetWindow(FWindow.Left, FWindow.Top, FWindow.Left + FWindow.Width - 1, 
-			FWindow.Top + FWindow.Height - 1, FBehind^);
-			FShown := True;
-			UpdateWindow(True);
-		end;
+{	end else begin
+		FShown := True;
+		UpdateWindow(True);
+	end; }
 	while Assigned(P) do begin
 		P^.Show;
 		P := PControl(P^.Next);

@@ -84,6 +84,7 @@ begin
 		WriteLog('MaxAvail ' + IntStr(MaxAvail) + ' / MemAvail ' + IntStr(MemAvail));
 	{$ENDIF}
 	inherited Create(AParent, AName);
+{	FPreserve := True;}
 	FInfo.Create(ftProgram);
 	FOriginalPath := '';
 	if not assigned(Application) then begin
