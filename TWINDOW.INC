@@ -117,7 +117,8 @@ end;
 
 constructor TWindow.Create(AParent : PControl; AName : String);
 begin
-	inherited Create(AParent, AName);	
+	inherited Create(AParent, AName);
+{	FPreserve := True;	}
 	FCanClose := True;
 	FMainWindow := False;
 	FAutoEndModal := False;
