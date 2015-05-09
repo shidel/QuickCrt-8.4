@@ -22,6 +22,7 @@ type
 		FHelp : PHelp;
 		FInfo : TInformation;
 		FOriginalPath : String;
+		FLanguageID : String;
 		FConfig,
 		FLanguage,
 		FTheme,
@@ -92,6 +93,7 @@ begin
 		GetDir(0, FOriginalPath);
 		ChDir(GetExePath);
 	end;
+	FLanguageID := 'en_US';
 	FClearWindow := False;
 	FAnchors := alClient;
 	FConfig.Create('CONFIG');
@@ -175,12 +177,12 @@ begin
 	FLanguage.SetFreeOnDestroy(False);
 	FLanguage.SetFileName(FConfig.GetValue('LANGUAGE', 'DEFAULT' + LanguageExt));
 	FLanguage.Read;
+	FLanguage.OpenSection('*');
 	{$IFDEF TEMPLATES}
 		AddComments(FLanguage, @LanguageComments);
-		FLanguage.OpenSection('*');
 		FLanguage.GetValue('TYPE', ftLanguage);
-		FLanguage.GetValue('ID', 'en_US');
 	{$ENDIF}
+	FLanguageID := FLanguage.GetValue('ID', 'en_US');
 	FLanguage.GetValue('NAME', 'US English');
 	FFileDateFmt := FLanguage.GetValue('FILE.DATE', '0[X3.2],1[L2],2[Z2];%1/%2/%0');
 	FFileTimeFmt := FLanguage.GetValue('FILE.TIME', '0[Z2],1[L2],2[Z2],3[Z2],4{a,p};%1:%2%4');
