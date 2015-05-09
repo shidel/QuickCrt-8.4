@@ -49,6 +49,7 @@ type
 		function IsValid : boolean; virtual;
 		function GetAutoAdd : boolean; virtual;
 		procedure SetAutoAdd (AValue : boolean); virtual;
+		procedure Clear; virtual;
 	end;
 	
 {$ENDIF}
@@ -402,5 +403,10 @@ end;
 procedure TConfigFile.SetAutoAdd (AValue : boolean); 
 begin
 	FAutoAdd := AValue;
+end;
+
+procedure TConfigFile.Clear;
+begin
+	FList.Clear;
 end;
 {$ENDIF}
