@@ -8,7 +8,7 @@
 *)
 
 const
-	DefaultMappedCommandsMax = 30;
+	DefaultMappedCommandsMax = 32;
 	DefaultMappedCommands : array[0..DefaultMappedCommandsMax] of Str55 = (
 		'None=$0000',
 		'Break=$0063:M+$0104', 			{ Ctrl+C }
@@ -28,6 +28,8 @@ const
 		'Right=$4D00:M+$0000',
 		'Up=$4800:M+$0000',
 		'Down=$5000:M+$0000',
+		'Before=$4800::M+$0001,$4800:M+$0002',
+		'After=$5000:M+$0001,$5000:M+$0002',
 		'Previous=$4B00:M+$0001,$4B00:M+$0002', { Shift + Left }
 		'Next=$4D00:M+$0001,$4D00:M+$0002',		{ Shift + Right }
 		'LineStart=$4B00:M+$0008,$4D00:M+$0208,$4700:M+$0000', { Alt+Left & Home }
@@ -46,7 +48,7 @@ const
 	);
 	
 const
-	DefaultCommandNamesMax = 64;
+	DefaultCommandNamesMax = 66;
 	DefaultCommandNames : array[0..DefaultCommandNamesMax] of Str25 = (
 		{ System/Environment Commands }
 		'None=$0000',
@@ -87,6 +89,8 @@ const
 		'GroupNext=$011B',
 		'TextStart=$011C',
 		'TextEnd=$011D',
+		'Before=$011E',
+		'After=$011F',
 		
 		'Cut=$0200',
 		'Copy=$0201',
