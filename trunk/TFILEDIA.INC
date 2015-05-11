@@ -30,6 +30,7 @@ type
 		procedure UpdateButtons; virtual;
 		procedure UpdateDir; virtual;
 		function GetFileName : String; virtual;
+		procedure SetFileName (AValue : String); virtual;
 		procedure ApplyLanguage( AConfig : PConfigFile ); virtual;
 	end;
 
@@ -184,6 +185,19 @@ begin
 		GetFileName := Dir(FPath.FEdit.GetCaption) + FFile.GetCaption
 	else
 		GetFileName := '';
+end;
+
+procedure TFileDialog.SetFileName(AValue : String);
+begin
+	if (Pos('*', AValue) > 0) or (Pos('?', AValue) > 0) then begin
+		FFilter.SetCaption('Other Files (' + UCase(Trim(AValue)) + ')');
+		FFile.SetCaption('');
+		UpdateDir;
+		UpdateButtons;
+	end else begin
+		FFile.SetCaption(AValue);
+		UpdateButtons;
+	end;
 end;
 
 procedure TFileDialog.ApplyLanguage( AConfig : PConfigFile );
