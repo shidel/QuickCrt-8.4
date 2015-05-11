@@ -67,7 +67,7 @@ type
 		function GetIndex : integer; virtual;
 		procedure SetScrollEdge(AValue : boolean); virtual;
 		function GetScrollEdge : boolean; virtual;
-		procedure AddItem( AValue : String); virtual;
+		function AddItem( AValue : String) : PListItem; virtual;
 		procedure SetSorted(AValue : boolean); virtual;
 		procedure ScrollTo(AValue : String); virtual;
 		function GetCurrent : PListItem; virtual;
@@ -650,11 +650,15 @@ begin
 	GetScrollEdge := FScrollEdge;
 end;
 
-procedure TListView.AddItem( AValue : String); 
+function TListView.AddItem( AValue : String) : PListItem; 
+var
+	Item : PListItem;
 begin
-	FItems.Add(New(PListItem, Create(AValue)));
+	Item := New(PListItem, Create(AValue));
+	FItems.Add(Item);
 	AdjustSize;
 	Update;
+	AddItem := Item;
 end;
 
 procedure TListView.SetSorted(AValue : boolean);

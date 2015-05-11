@@ -227,6 +227,9 @@ interface
 	cmGroupNext		= $011B;
 	cmTextStart		= $011C;
 	cmTextEnd		= $011D;
+	cmBefore		= $011E;
+	cmAfter			= $011F;	
+	
 	cmCut			= $0200;
 	cmCopy			= $0201;
 	cmPaste			= $0202;
