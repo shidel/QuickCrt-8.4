@@ -177,12 +177,12 @@ begin
 	FLanguage.SetFreeOnDestroy(False);
 	FLanguage.SetFileName(FConfig.GetValue('LANGUAGE', 'DEFAULT' + LanguageExt));
 	FLanguage.Read;
-	FLanguage.OpenSection('*');
 	{$IFDEF TEMPLATES}
 		AddComments(FLanguage, @LanguageComments);
-		FLanguage.GetValue('TYPE', ftLanguage);
 	{$ENDIF}
+	FLanguage.OpenSection('*');
 	FLanguageID := FLanguage.GetValue('ID', 'en_US');
+	FLanguage.GetValue('TYPE', ftLanguage);
 	FLanguage.GetValue('NAME', 'US English');
 	FFileDateFmt := FLanguage.GetValue('FILE.DATE', '0[X3.2],1[L2],2[Z2];%1/%2/%0');
 	FFileTimeFmt := FLanguage.GetValue('FILE.TIME', '0[Z2],1[L2],2[Z2],3[Z2],4{a,p};%1:%2%4');
