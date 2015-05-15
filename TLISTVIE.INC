@@ -46,6 +46,7 @@ type
 		procedure AdjustBars; virtual;
 		procedure CheckMouse(var AEvent : TEvent); virtual;
 		procedure CheckMarkers(FNoNill : boolean); virtual;
+		procedure EndUpdate; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
 		destructor Destroy; virtual;
@@ -74,6 +75,7 @@ type
 		procedure ClearItems; virtual;
 		procedure SetAllowEmpty(AValue : boolean); virtual;
 		function GetAllowEmpty : boolean; virtual;
+		
 	end;
 {$ENDIF}
 
@@ -656,8 +658,10 @@ var
 begin
 	Item := New(PListItem, Create(AValue));
 	FItems.Add(Item);
-	AdjustSize;
-	Update;
+	if not FUpdating then begin
+		AdjustSize;
+		Update;
+	end;
 	AddItem := Item;
 end;
 
@@ -696,5 +700,12 @@ end;
 function TListView.GetAllowEmpty : boolean;
 begin
 	GetAllowEmpty := FAllowNull;
+end;
+
+procedure TListView.EndUpdate;
+begin
+	if not FUpdating then exit;
+	CheckMarkers(not FAllowNull);
+	inherited EndUpdate;
 end;
 {$ENDIF}

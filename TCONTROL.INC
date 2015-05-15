@@ -59,6 +59,8 @@ type
 		FClearWindow : boolean;
 		FAutoSize : boolean;
 		
+		FUpdating : boolean;
+		
 		FHelpList : TListItem;
 
 		procedure UpdateWindow(AValue : boolean); virtual;
@@ -83,6 +85,9 @@ type
 		procedure BeforeShow; virtual;
 		procedure AfterHide; virtual;
 		procedure DoAutoSize; virtual;
+		
+		procedure BeginUpdate; virtual;
+		procedure EndUpdate; virtual;
 
 	public { public }
 		{$IFDEF EventProcs}
@@ -180,6 +185,7 @@ constructor TControl.Create;
 begin
 	inherited Create(AName);
 	FClearWindow := True;
+	FUpdating := False;
 {	FPreserve := False;}
 	FHelpList.Create('HELP');
 	FAllowOutside := False;
@@ -298,7 +304,7 @@ procedure TControl.SetEnabled(AValue : boolean);
 begin
 	if FEnabled = AValue then exit;
 	FEnabled := AValue;
-	Refresh;
+	Update;
 end;
 
 procedure TControl.SetTabStop(AValue : Boolean); 
@@ -666,6 +672,7 @@ procedure TControl.UpdateWindow(AValue : boolean);
 var	
 	P : PControl;
 begin
+	if FUpdating then exit;
 	if Not FShown then exit;
 	StartDrawing;
 	TextAttr := FAttr.Normal;
@@ -1106,4 +1113,16 @@ begin
 	FHelpList.Clear;
 end;
 
+procedure TControl.BeginUpdate;
+begin
+	FUpdating := True;
+end;
+
+procedure TControl.EndUpdate;
+begin
+	if Not FUpdating then Exit;
+	FUpdating := False;
+	AdjustSize;
+	Update;
+end;
 {$ENDIF}
