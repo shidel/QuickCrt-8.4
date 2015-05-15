@@ -57,6 +57,7 @@ const { Default File Extensions }
     FontExt 	= '.FNT';
     InfoExt 	= '.PMI';
     ESaverExt 	= '.SCR';
+    EMenuExt	= '.MNU';
 
 const { Text Config File ID Tags }
     ftConfig 	= 'CONFIG';
