@@ -252,7 +252,8 @@ begin
 		end;
 		{$ENDIF}			
 		CheckEvent(Event);
-	until (Not FShown) or (not FVisible) or FStopModal; 
+	until (Not FShown) or (not FVisible) or FStopModal or 
+	(Assigned(Application) and Application^.FTerminator); 
 	if FEndTone <> '' then SpeakerPlay(FEndTone);
 	if Assigned(Application) then Application^.FFocused := nil;
 
