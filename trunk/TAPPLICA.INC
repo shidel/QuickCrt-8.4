@@ -482,7 +482,7 @@ begin
 		while Assigned(P) do begin
 			T := P^.First;
 			while Assigned(T) do begin
-				VCount := VCount +  Length(T^.GetNameID) - Length(FilterStr(T^.GetNameID, ',')) + 1;
+				VCount := VCount +  Length(T^.GetNameID) - Length(FilterChar(T^.GetNameID, ',')) + 1;
 				T := T^.Next;
 			end;
 			P := P^.Next;
@@ -571,7 +571,7 @@ begin
 		while Assigned(P) do begin
 			T := P^.First;
 			while Assigned(T) do begin
-				VCount := VCount +  Length(T^.GetNameID) - Length(FilterStr(T^.GetNameID, ',')) + 1;
+				VCount := VCount +  Length(T^.GetNameID) - Length(FilterChar(T^.GetNameID, ',')) + 1;
 				T := T^.Next;
 			end;
 			P := P^.Next;

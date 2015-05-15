@@ -92,11 +92,11 @@ interface
   
   function FirstChar ( Str : String ) : Byte;  
   { returns the position of the First character }
-  function FilterStr ( Str : String; C : Char ) : String;
+  function FilterChar ( Str : String; C : Char ) : String;
   { removes matching characters from a string }
-  function ReplaceStr ( Str : String; O, N : Char ) : String; 
+  function ReplaceChar ( Str : String; O, N : Char ) : String; 
   { Replaces characters in a string }
-  procedure AddChr ( var S : String; C : Char );
+  procedure AddChar ( var S : String; C : Char );
   { Adds Character to end of String }
   procedure AddStr ( var S1 : String; S2 : String );
   { Adds Character to end of String }
@@ -235,7 +235,7 @@ implementation
       end;
     end;
 {----------------------------------------------------------------------------}
-  function FilterStr ( Str : String; C : Char ) : String;
+  function FilterChar ( Str : String; C : Char ) : String;
     begin
       asm
         CLD
@@ -263,7 +263,7 @@ implementation
       end;
     end;
 {----------------------------------------------------------------------------}
-  function ReplaceStr ( Str : String; O, N : Char ) : String;
+  function ReplaceChar ( Str : String; O, N : Char ) : String;
     begin
       asm
         CLD
@@ -712,7 +712,7 @@ end;
   	PluralStr := WhichStr(I = 1, 's', '');
   end;
 
-  procedure AddChr ( var S : String; C : Char );
+  procedure AddChar ( var S : String; C : Char );
     begin
       Inc(Byte(S[0]));
       S[Byte(S[0])] := C;
