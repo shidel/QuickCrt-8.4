@@ -20,6 +20,7 @@ type
     	FLastFound : PListItem;
     	function GetIndexOfChild(AItem : PListItem) : integer; virtual;
     public { protected }
+		procedure SetNameID ( AValue : String ); virtual;	
 		function  ObjectClass ( AName : String ) : String; virtual;
     public
         Next, Prior, First, Last : PListItem;
@@ -65,6 +66,20 @@ begin
 	Clear;
 	DestroyData;
 	inherited Destroy;
+end;
+
+procedure TListItem.SetNameID ( AValue : String );
+var
+	P : PObject;
+begin
+	if Assigned(Parent) and (Parent^.ClassOf(class_TListItem)) and
+	PListItem(Parent)^.Sorted then begin
+		P := Parent;
+		PListItem(P)^.Remove(@Self);
+		inherited SetNameID(AValue);
+		PListItem(P)^.Add(@Self);
+	end else 
+		inherited SetNameID(AValue);
 end;
 
 function TListItem.Compare (ToItem : PListItem) : integer; 
@@ -166,10 +181,16 @@ begin
 		AItem^.Prior^.Next := AItem^.Next;
 	if Assigned(AItem^.Next) then
 		AItem^.Next^.Prior := AItem^.Prior;
+		
 	if AItem = First then
 		First := AItem^.Next;
 	if AItem = Last then
 		Last := AItem^.Prior;
+		
+	AItem^.Parent := nil;
+	AItem^.Prior := nil;
+	AItem^.Next := nil;
+	
 	Dec(Count);
 end;
 
@@ -181,7 +202,7 @@ begin
 		P := FLastFound;
 		while Assigned(P) and (P^.GetNameID >= AValue) and (Assigned(P^.Prior)) do
 			P := P^.Prior;
-		while Assigned(P) and (P^.GetNameID < AValue) do
+		while Assigned(P) and (P^.GetNameID < AValue) and (Assigned(P^.Next)) do
 			P := P^.Next;
 		if Assigned(P) and (P^.GetNameID <> AValue) then
 			P := nil;

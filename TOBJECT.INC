@@ -25,7 +25,7 @@ type
 	public { protected }
 		Parent : PObject;
 		FFreeOnDestroy : boolean;
-		procedure SetNameID ( AValue : String ); 	
+		procedure SetNameID ( AValue : String ); virtual;	
 		function  GetFreeOnDestroy : boolean;
 		procedure SetFreeOnDestroy(AValue : boolean);
 		function  ObjectClass ( AName : String ) : String; virtual;
