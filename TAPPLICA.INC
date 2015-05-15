@@ -30,7 +30,7 @@ type
 		FFont : TFont;
 		FFocused, FMouseFocus : PControl;
 		FDefaultDAC, FUserDAC : Pointer;
-		FCanQuit : boolean;
+		FTerminator, FCanQuit : boolean;
 	{ User Config Stuff }
 		FClrScr,
 		FUseFader,
@@ -85,6 +85,7 @@ begin
 		WriteLog('MaxAvail ' + IntStr(MaxAvail) + ' / MemAvail ' + IntStr(MemAvail));
 	{$ENDIF}
 	inherited Create(AParent, AName);
+	FTerminator := False;
 {	FPreserve := True;}
 	FInfo.Create(ftProgram);
 	FOriginalPath := '';
@@ -222,14 +223,9 @@ begin
 end;
 
 procedure TApplication.Terminate;
-var
-	AEvent : TEvent;
 begin
-	if FShown then Hide;
-	ClearEvent(AEvent);
-	AEvent.What := evCommand;
-	AEvent.Command := cmQuit;
-	PutEvent(AEvent);
+	FTerminator := True;
+	PutCommand(cmQuit, @Self);
 end;
 
 procedure TApplication.Execute;
@@ -348,7 +344,8 @@ begin
 			{$ENDIF}			
 			if (Event.What <> evCommand) or (Event.Command <> cmQuit) then 
 				CheckEvent(Event);
-		until (Not FShown) or (FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit)); 
+		until (FTerminator) or (Not FShown) or 
+		(FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit));
 		if FEndTone <> '' then begin
 			PurgeEvents;
 			SpeakerPlay(FEndTone);
