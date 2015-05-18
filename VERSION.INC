@@ -10,5 +10,5 @@ const
 		Month:05; 
 		Day:18; 
 		Revision:41; 
-		URL:'svn+ssh://shidel@svn.code.sf.net/p/quickcrt/svn/trunk' 
+		URL:'http://pgme.sourceforge.net' 
 	); 
