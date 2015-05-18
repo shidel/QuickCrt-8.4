@@ -83,13 +83,12 @@ begin
 	CheckScroll := False;
 	HideCursor;
 	
-	Show;
 	PurgeEvents;
-	ClearEvent(Event);
-	while Event.What = evNothing do begin
+	Show;
+	repeat 
 		GetEvent(Event);
 		Refresh;
-	end;
+	until Event.What <> evNothing;
 	Hide;
 	
 	SetQCrtState(QCrtSettings);	

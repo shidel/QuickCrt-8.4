@@ -3550,10 +3550,15 @@ end;
 
 { Event Functions }
   procedure PurgeEvents;
+    var
+    	Temp : TEvent;
     begin
       CommandBuf.Purge;
       KeyBuf.Purge;
       MouseBuf.Purge;
+      repeat
+      	GetEvent(Temp);
+      until Temp.What = evNothing; 
     end;
 
   procedure ClearEvent(var Event : TEvent);
