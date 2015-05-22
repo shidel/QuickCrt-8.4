@@ -221,6 +221,8 @@ interface
   procedure FindNext(var SearchRec : TSearchRec);
   
   { Other Functions }
+  function PathOf(AFileName : String) : String;
+
   function GetExeName : string; 
   function GetExeBase : string; 
   function GetExePath : string;
@@ -1067,6 +1069,11 @@ uses QStrings;
   end;
   
   { Other Functions }
+  function PathOf(AFileName : String) : String;
+  begin
+	PathOf := Trim(UCase(Copy(AFileName, 1, LastPos('\', AFileName))));
+  end;
+  
   function GetExeName : string; 
   var
     P : integer;
