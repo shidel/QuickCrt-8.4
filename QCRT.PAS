@@ -12,9 +12,9 @@ unit QCrt; { QuickCRT, version 8.40 }
 	QCrt is the text mode CRT video unit of QuickCrt. 
 	When version 9+ of QCrt is begun, it will be removed from the QuickCrt project
 	permanently. It will become an assembly language project with Pascal wrappers and
-	will be hosted on at https://github.com/loopz. The intent will be to make QCrt
-	support ASM and Pascal development with support for Dos, Windows, Mac, Linux and
-	bare metal OS Development.
+	will be hosted at https://github.com/loopz. The intent will be to make QCrt support
+	for ASM and Pascal development with support for Dos, Windows, Mac, Linux and bare
+	metal OS Development.
 *)
 {$I QCrt.def}
 {$F+,O-}
