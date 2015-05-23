@@ -42,6 +42,14 @@ type
 	
 implementation
 
+const
+	TickCount : integer = 0;
+	LastTick : longint = 0;
+	
+var
+	TimerTick : LongInt absolute $0040:$006c;
+
+
 function TScreenSaver.ObjectClass(AName : String) : String; 
 begin
 	if (AName = '') or (AName = class_TScreenSaver) then 
@@ -83,12 +91,16 @@ begin
 	CheckScroll := False;
 	HideCursor;
 	
-	PurgeEvents;
 	Show;
 	repeat 
 		GetEvent(Event);
 		Refresh;
-	until Event.What <> evNothing;
+		if (TickCount < 18) and (LastTick <> TimerTick) then begin
+			PurgeEvents;		
+			Inc(TickCount);
+			LastTick := TimerTick;
+		end;
+	until (Event.What <> evNothing) and (TickCount >= 18);
 	Hide;
 	
 	SetQCrtState(QCrtSettings);	
@@ -101,6 +113,7 @@ begin
 			FreeMem(Screen, Size);
 		end;
 	{$ENDIF}
+	PurgeEvents;
 end;
 
 procedure TScreenSaver.Refresh;
