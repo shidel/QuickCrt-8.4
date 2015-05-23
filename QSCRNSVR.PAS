@@ -92,7 +92,8 @@ begin
 	HideCursor;
 	
 	Show;
-	repeat 
+	repeat
+		ClearEvent(Event); 
 		GetEvent(Event);
 		Refresh;
 		if (TickCount < 18) and (LastTick <> TimerTick) then begin
