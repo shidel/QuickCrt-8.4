@@ -77,11 +77,6 @@ procedure TPopUpList.CheckLocal(var AEvent : TEvent);
 begin
 	if AEvent.What = evCommand then
 		case AEvent.Command of
-			cmQuit : begin
-				ClearEvent(AEvent); 
-				FStopModal := True;
-				PutCommand(cmQuit, nil);
-			end;
 			cmListView, cmListViewDouble : if AEvent.InfoPtr = @FList then begin
 				ClearEvent(AEvent); 
 				FResult := mrOK;

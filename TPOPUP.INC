@@ -18,6 +18,8 @@ type
 	TPopUp = object(TWindow)
     public { protected }
 		function  ObjectClass ( AName : String ) : String; virtual;
+	public { protected }
+		procedure CheckLocal(var AEvent : TEvent); virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
 		destructor Destroy; virtual;
@@ -49,6 +51,27 @@ end;
 destructor TPopUp.Destroy;
 begin
 	inherited Destroy;
+end;
+
+procedure TPopUp.CheckLocal(var AEvent : TEvent); 
+begin
+	if AEvent.What = evCommand then
+		case AEvent.Command of
+			cmQuit : begin
+				ClearEvent(AEvent); 
+				FStopModal := True;
+				PutCommand(cmQuit, nil);
+			end;
+		else
+			{ Really Kludgy test to see if a child generated an event.
+			  if so, repost and close }
+			if Assigned(AEvent.InfoPtr) and (PControl(AEvent.InfoPtr)^.Parent = @Self) then begin
+				PutEvent(AEvent);
+				ClearEvent(AEvent);
+				FStopModal := True;
+			end;
+		end;
+	inherited CheckLocal(AEvent);
 end;
 
 {$ENDIF}
