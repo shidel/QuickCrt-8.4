@@ -303,7 +303,7 @@ begin
 	else
 		GetValue := ADefault;
 	{$IFDEF TEMPLATES}
-	if not Assigned(P) then
+	if (not Assigned(P)) then
 		SetValue(AItem, ADefault);
 	{$ELSE}
 	if (not Assigned(P)) and FAutoAdd then
@@ -316,6 +316,8 @@ var
 	P : PListItem;
 begin
 	if not assigned(FSectionKey) then exit;
+	{$IFDEF TEMPLATES}
+	{$ENDIF}
 	P := FindKey(AItem);
 	if not Assigned(P) then begin
 		P := New(PListItem, Create(UCase(Trim(AItem))));

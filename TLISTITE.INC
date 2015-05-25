@@ -11,7 +11,7 @@
 
 {$IFDEF INTERFACE}
 const
-	class_TListItem = 'TListItem';
+	class_TListItem : TObjectClass = 'TListItem';
 
 type
     PListItem = ^TListItem;
