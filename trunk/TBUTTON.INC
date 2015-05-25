@@ -15,7 +15,7 @@ const
 	
 type
 	PButton = ^TButton;
-	TButton = object(TPanel)
+	TButton = object(TLabel)
     public { protected }
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public

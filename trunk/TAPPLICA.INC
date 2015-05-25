@@ -261,113 +261,113 @@ begin
 	{$ENDIF}
 
 	{$IFNDEF TEMPLATES} { If template mode then don't loop application }
-	CheckScroll := False;
-	CheckCursor := False;
-	HideCursor;
+		CheckScroll := False;
+		CheckCursor := False;
+		HideCursor;
 
-	{ Same as TWindow.ShowModal but this the application version }
-	if Not FShown then 
-		begin
-			if FUseDAC and FUseFader then 
-				FadeOutDAC(0,256,FDefaultDAC^);
-		end;
+		{ Same as TWindow.ShowModal but this the application version }
+		if Not FShown then 
+			begin
+				if FUseDAC and FUseFader then 
+					FadeOutDAC(0,256,FDefaultDAC^);
+			end;
 		
-	if (FFont.GetFileName <> '') and (not FClrScr) then 
-		begin
-			Size := GetVideoSize;
-			Temp := GetVideoPtr;
-			if Not MemCheck(Size) then Halt(erInsufficient_Memory);
-			GetMem(Screen, Size);
-			SetVideoPtr(Screen);
-			CopyFromVideo;
-			SetVideoPtr(Temp);
+		if (FFont.GetFileName <> '') and (not FClrScr) then 
+			begin
+				Size := GetVideoSize;
+				Temp := GetVideoPtr;
+				if Not MemCheck(Size) then Halt(erInsufficient_Memory);
+				GetMem(Screen, Size);
+				SetVideoPtr(Screen);
+				CopyFromVideo;
+				SetVideoPtr(Temp);
+			end;
+
+		if FFont.GetFileName <> '' then 
+			begin
+				FFont.SetEnabled(True);
+				HideCursor;
+			end;
+
+		if FClrScr then begin
+			TextAttr := $07;
+			ClrScr;
 		end;
 
-	if FFont.GetFileName <> '' then 
-		begin
-			FFont.SetEnabled(True);
-			HideCursor;
-		end;
+		if Not FShown then 
+			begin
+				if FUseDAC and FUseFader then begin
+					if Not MemCheck(Sizeof(TDac)) then Halt(erInsufficient_Memory);				
+					GetMem(TempDac, Sizeof(TDac));
+					FillChar(TempDac^, Sizeof(TDac), 0);
+					WriteDAC(0,256,TempDAC^);
+					FreeMem(TempDac, Sizeof(TDac));
+				end;
+				FVisible := True;
+				AdjustSize;
+				Show;
+				if FUseDAC then begin
+					if FUseFader then 
+						FadeInDAC(0,256,FUserDAC^);
+					WriteDAC(0,256,FUserDAC^)					
+				end;
+			end;
+			{$IFDEF DEVLOG}
+				WriteLog('Start Execution Loop');
+				LogInc;
+			{$ENDIF}
+			if FStartTone <> '' then SpeakerPlay(FStartTone);
+			repeat
+				ClearEvent(Event);		
+				while Event.What = evNothing do begin
+					GetEvent(Event);			
+					if (Event.What = evNothing) then Idle;
+				end;
+				{$IFDEF DEVLOG_EVENTS}
+				if Event.What and evMouse = evNone then begin
+					TempStr := 'Event: ';
+					case Event.What of
+						evNone : TempStr := TempStr + 'evNone';
+						evKeyboard :  begin
+							TempStr := TempStr + 'evKeyboard ';
+							TempStr := TempStr + ZPad(BinStr(Event.ShiftCode), 16) + ':' + 
+								ZPad(HexStr(Event.KeyCode), 4);
+							if Event.Original <> 0 then
+								TempStr := TempStr + ' (' + ZPad(HexStr(Event.Original), 4) + ')';
+								end;
+						evCommand : begin
+							TempStr	:= TempStr + ' evCommand ' + Application^.GetCommandName(Event.Command);
+						end;
+					end;		
+					WriteLog(TempStr);
+				end;
+				{$ENDIF}			
+				if (Event.What <> evCommand) or (Event.Command <> cmQuit) then 
+					CheckEvent(Event);
+			until (FTerminator) or (Not FShown) or 
+			(FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit));
+			if FEndTone <> '' then begin
+				PurgeEvents;
+				SpeakerPlay(FEndTone);
+				While SpeakerState and SpeakerPlaying do begin
+					ClearEvent(Event);
+					GetEvent(Event);
+					if (Event.What = evSystem) and (Event.Command = cmSpeaker) then
+						SpeakerNext;
+				end;
+				SpeakerOff;
+			end;
+			if Assigned(Application) then Application^.FFocused := nil;
+			{ IdleProc := OldIdleProc; }
+			{$IFDEF DEVLOG}
+				LogDec;
+				WriteLog('End Execution Loop');
+			{$ENDIF}
 
-	if FClrScr then begin
-		TextAttr := $07;
-		ClrScr;
-	end;
+		if FUseDAC and FUseFader then 
+			FadeOutDAC(0,256,FUserDAC^); 
 
-	if Not FShown then 
-		begin
-			if FUseDAC and FUseFader then begin
-				if Not MemCheck(Sizeof(TDac)) then Halt(erInsufficient_Memory);				
-				GetMem(TempDac, Sizeof(TDac));
-				FillChar(TempDac^, Sizeof(TDac), 0);
-				WriteDAC(0,256,TempDAC^);
-				FreeMem(TempDac, Sizeof(TDac));
-			end;
-			FVisible := True;
-			AdjustSize;
-			Show;
-			if FUseDAC then begin
-				if FUseFader then 
-					FadeInDAC(0,256,FUserDAC^);
-				WriteDAC(0,256,FUserDAC^)					
-			end;
-		end;
-		{$IFDEF DEVLOG}
-			WriteLog('Start Execution Loop');
-			LogInc;
-		{$ENDIF}
-		if FStartTone <> '' then SpeakerPlay(FStartTone);
-		repeat
-			ClearEvent(Event);		
-			while Event.What = evNothing do begin
-				GetEvent(Event);			
-				if (Event.What = evNothing) then Idle;
-			end;
-			{$IFDEF DEVLOG_EVENTS}
-			if Event.What and evMouse = evNone then begin
-				TempStr := 'Event: ';
-				case Event.What of
-					evNone : TempStr := TempStr + 'evNone';
-					evKeyboard :  begin
-						TempStr := TempStr + 'evKeyboard ';
-						TempStr := TempStr + ZPad(BinStr(Event.ShiftCode), 16) + ':' + 
-							ZPad(HexStr(Event.KeyCode), 4);
-						if Event.Original <> 0 then
-							TempStr := TempStr + ' (' + ZPad(HexStr(Event.Original), 4) + ')';
-							end;
-					evCommand : begin
-						TempStr	:= TempStr + ' evCommand ' + Application^.GetCommandName(Event.Command);
-					end;
-				end;		
-				WriteLog(TempStr);
-			end;
-			{$ENDIF}			
-			if (Event.What <> evCommand) or (Event.Command <> cmQuit) then 
-				CheckEvent(Event);
-		until (FTerminator) or (Not FShown) or 
-		(FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit));
-		if FEndTone <> '' then begin
-			PurgeEvents;
-			SpeakerPlay(FEndTone);
-			While SpeakerState and SpeakerPlaying do begin
-				ClearEvent(Event);
-				GetEvent(Event);
-				if (Event.What = evSystem) and (Event.Command = cmSpeaker) then
-					SpeakerNext;
-			end;
-			SpeakerOff;
-		end;
-		if Assigned(Application) then Application^.FFocused := nil;
-		{ IdleProc := OldIdleProc; }
-		{$IFDEF DEVLOG}
-			LogDec;
-			WriteLog('End Execution Loop');
-		{$ENDIF}
-
-	if FUseDAC and FUseFader then 
-		FadeOutDAC(0,256,FUserDAC^); 
-
-	Hide;
+		Hide;
 	{$ENDIF}
 
 	{$IFDEF TEMPLATES}

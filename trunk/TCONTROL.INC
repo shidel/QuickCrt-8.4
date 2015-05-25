@@ -24,6 +24,7 @@ type
 		FBehind : Pointer; { Saved Screen Pointer }
 		FBSize : integer;  { Size of Saved Screen }
     public { protected }
+    	FPreserve : boolean;
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public { protected }
 		FWindow : TBounds; 
@@ -185,6 +186,7 @@ constructor TControl.Create;
 begin
 	inherited Create(AName);
 	FClearWindow := True;
+	FPreserve := ClassOf(class_TPanel) or true;
 	FUpdating := False;
 {	FPreserve := False;}
 	FHelpList.Create('HELP');
@@ -601,30 +603,30 @@ begin
 	if (FWindow.Height < 1) then exit;
 	BeforeShow;
 	StartDrawing;
-	P := PControl(First);
-{	if FPreserve then begin }
+	if FPreserve then begin
 		if not Assigned(FBehind) then 
 			begin
-				if MaxAvail <= WindowSize(FWindow.Left, FWindow.Top, 
-				FWindow.Left + FWindow.Width - 1, FWindow.Top + FWindow.Height - 1) then
+				FBSize := WindowSize(FWindow.Left, FWindow.Top, FWindow.Left + 
+					FWindow.Width - 1, FWindow.Top + FWindow.Height - 1);
+				if not MemCheck(FBSize) then
 						Halt(erInsufficient_Memory); 
 				Window(1, 1, Lo(ScreenMax) + 1, Hi(ScreenMax) + 1);
-				FBSize := WindowSize(FWindow.Left, FWindow.Top, FWindow.Left + 
-				FWindow.Width - 1, FWindow.Top + FWindow.Height - 1);
-				GetMem(FBehind, FBSize );
+				GetMem(FBehind, FBSize);
 				GetWindow(FWindow.Left, FWindow.Top, FWindow.Left + FWindow.Width - 1, 
 				FWindow.Top + FWindow.Height - 1, FBehind^);
 				FShown := True;
 				UpdateWindow(True);
 			end;
-{	end else begin
+	end else begin
+		Window(1, 1, Lo(ScreenMax) + 1, Hi(ScreenMax) + 1);
 		FShown := True;
 		UpdateWindow(True);
-	end; }
+	end; 
+{	P := PControl(First);
 	while Assigned(P) do begin
 		P^.Show;
 		P := PControl(P^.Next);
-	end;
+	end; }
 	FinishDrawing;
 end;
 
@@ -637,7 +639,7 @@ begin
 	P := PControl(First);
 	while Assigned(P) do begin
 		P^.Hide;
-		P := PCOntrol(P^.Next);
+		P := PControl(P^.Next);
 	end;
 	if Assigned(FBehind) then 
 		begin
@@ -692,7 +694,10 @@ begin
 	Draw;
 	P := PControl(First);
 	while Assigned(P) do begin
-		P^.UpdateWindow(AValue);
+		if P^.FShown then
+			P^.UpdateWindow(AValue)
+		else
+			P^.Show;
 		P := PControl(P^.Next);
 	end;
 	
