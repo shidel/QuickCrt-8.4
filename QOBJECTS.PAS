@@ -157,7 +157,7 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		PSize := GetVideoSize;
 		if Not Assigned(PBuffer) then
 			begin
-				if MaxAvail < PSize then Halt(erInsufficient_Memory); 
+				if not MemCheck( PSize ) then Halt(erInsufficient_Memory); 
 				GetMem(PBuffer, PSize);
 			end;
 		SetVideoPtr(PBuffer);
@@ -219,8 +219,12 @@ uses QErrors, QDos, QFiles, QFmtStr;
 	end;
 	
 	procedure InitQObjects;
-	begin		
-		BufferedVideo := True;
+	begin
+		{$IFDEF TEMPLATES}
+			BufferedVideo := False;
+		{$ELSE}		
+			BufferedVideo := True;
+		{$ENDIF}
 		DrawCounter := 0;
 		PBuffer := nil;
 		PSize := 0;
