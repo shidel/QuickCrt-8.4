@@ -230,6 +230,7 @@ interface
  
   { Expands a file or dir name to full path }
   function FileExpand(AFileName : String) : String;
+  function FileExtension(AFileName : String) : String; 
   
   { Returns 0, if the dir exists or was able to be created. Or
   non-zero error code }
@@ -1450,6 +1451,18 @@ end;
         end;
         SaveIntVecs;
     end;
+
+function FileExtension(AFileName : String) : String; 
+var
+	I : integer;
+begin
+	I := LastPos('.', AFilename);
+	if I < Length(AFileName) - 3 then 
+		FileExtension := ''
+	else
+		FileExtension := UCase(Copy(AFileName, I + 1, 3));
+end;
+
 
 begin
   InitUnit;
