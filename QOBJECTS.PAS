@@ -228,6 +228,7 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		DrawCounter := 0;
 		PBuffer := nil;
 		PSize := 0;
+		CheckBreak  := False;
 		ShowMemFlag := False;
 		OldExitProc := ExitProc;
 		ExitProc := @ExitQObjects;
