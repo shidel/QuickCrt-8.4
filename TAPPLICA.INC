@@ -35,7 +35,7 @@ type
 		FClrScr,
 		FUseFader,
 		FUseDAC, 
-		FUseSound : boolean;
+		FUseSound, FInSound, FOutSound : boolean;
 		FFileDateFmt, FFileTimeFmt : String;
 		FStartTone, FEndTone : String;
 		
@@ -116,6 +116,8 @@ begin
 	FUserDAC := nil;
 	FClrScr := false;
 	FUseSound := True;
+	FInSound := True;
+	FOutSound := True;
 	FCanQuit := True;
 
 	FStartTone := '200:2,300:2,400:2,500:3,0:3,400:2,500:6';
@@ -316,7 +318,7 @@ begin
 				WriteLog('Start Execution Loop');
 				LogInc;
 			{$ENDIF}
-			if FStartTone <> '' then SpeakerPlay(FStartTone);
+			if FInSound and (FStartTone <> '') then SpeakerPlay(FStartTone);
 			repeat
 				ClearEvent(Event);		
 				while Event.What = evNothing do begin
@@ -346,7 +348,7 @@ begin
 					CheckEvent(Event);
 			until (FTerminator) or (Not FShown) or 
 			(FCanQuit and (Event.What = evCommand) and (Event.Command = cmQuit));
-			if FEndTone <> '' then begin
+			if FOutSound and (FEndTone <> '') then begin
 				PurgeEvents;
 				SpeakerPlay(FEndTone);
 				While SpeakerState and SpeakerPlaying do begin
