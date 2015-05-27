@@ -503,6 +503,9 @@ interface
     BreakCount: Word;       { Number of times CTRL-BREAK has been pressed }
     PrintCount: word;       { Number of times PRINT-SCREEN has been pressed }
     SysReqCount: Word;      { Number of times SYSREQ has been pressed }
+    EventFlag : boolean;	{ True when a event has been received, 
+    	good for screen savers. You must set to false after processing. Also,
+    	cleared by PurgeEvents. }
     FontHeight: word;       { Height of current defined font }
     UserFontSize: byte;     { Height of user defined font }
     UserFontPtr: Pointer;   { Pointer to user defined font }
@@ -1771,6 +1774,7 @@ end;
       KeyBuf.Init    (@KeyBuffer, KeyBufSize);
       MouseBuf.Init  (@KeyBuffer, KeyBufSize);
       CommandBuf.Init(@KeyBuffer, KeyBufSize);
+      EventFlag     := False;
       EditSender    := nil;
       KeyMap 		:= nil;
       KeyCount   	:= 0;
@@ -3567,6 +3571,7 @@ end;
       repeat
       	GetEvent(Temp);
       until Temp.What = evNothing; 
+      EventFlag := False;
     end;
 
   procedure ClearEvent(var Event : TEvent);
@@ -3614,6 +3619,8 @@ end;
       if Not KeyBuf.GetEvent(Event)     then
       if Not MouseBuf.GetEvent(Event)   then
         IdleMouseProc;
+      if Event.What <> evNothing then
+      	EventFlag := True;      
     end;
 
   function PutEvent(var Event : TEvent) : boolean;
