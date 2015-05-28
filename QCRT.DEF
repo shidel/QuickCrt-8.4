@@ -25,9 +25,9 @@
 	{$DEFINE DEVINFO}
 {$ENDIF}
 
-{ IFDEF DEVINFO}
+{$IFDEF DEVINFO}
 	{$DEFINE MEMINFO}
-{ ENDIF}
+{$ENDIF}
 
 {$IFDEF DEVLOG}
 	{$DEFINE DEVLOG_CLEAN}		{ Cleans out log file on each execution }
