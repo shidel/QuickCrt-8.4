@@ -53,6 +53,7 @@ begin
 	FStateStr := #32'X';
 	FPadStr := #32;
 	FState := 0;
+	FAttr.Disabled := $78;
 	FColorStr := FStateStr;
 	FillChar(FColorStr[1], Length(FColorStr), TextAttr);
 	FTrigger := cmCheckbox;
@@ -66,10 +67,10 @@ end;
 procedure TCheckBox.ApplyTheme( AConfig : PConfigFile ); 
 begin
 	inherited ApplyTheme( AConfig );
-	FColorStr := AConfig^.GetHexStr('COLORS', StrHex(FColorStr, False));   
-	FStateStr := AConfig^.GetHexStr('STATES', StrHex(FStateStr, False));
-	FPadStr := AConfig^.GetHexStr('SEPARATOR', StrHex(FPadStr, False));
-	FCheckStr := AConfig^.GetValue('CHECK', FCheckStr);
+	FColorStr := AConfig^.GetHexStr('STATE.COLOR', StrHex(FColorStr, False));   
+	FStateStr := AConfig^.GetHexStr('STATE.CHAR', StrHex(FStateStr, False));
+	FPadStr := AConfig^.GetHexStr('STATE.PAD', StrHex(FPadStr, False));
+	FCheckStr := AConfig^.GetValue('STATE.CHECK', FCheckStr);
 end;
 
 function TCheckBox.TextWidth : integer; 
@@ -126,13 +127,18 @@ begin
 	C := TextAttr;
 	T.ID := fmtString;
 	T.StringValue := FStateStr[FState + 1];
-	TextAttr := Byte(FColorStr[1]);
+	if FEnabled then
+		TextAttr := Byte(FColorStr[1])
+	else
+		TextAttr := FAttr.Disabled;
 	FWrite(FormatStr(FCheckStr, T, 1));
 	P := Pos('%0', FCheckStr) - Pos(';', FCheckStr);
-	if FState < Length(FColorStr) then 
-		TextAttr := Byte(FColorStr[FState + 1])
-	else
-		TextAttr := Byte(FColorStr[Length(FColorStr)]);
+	if FEnabled then begin
+		if FState < Length(FColorStr) then 
+			TextAttr := Byte(FColorStr[FState + 1])
+		else
+			TextAttr := Byte(FColorStr[Length(FColorStr)]);
+	end;
 	X := WhereX;
 	GotoXY(P, 1);
 	FWrite(FStateStr[FState + 1]);
