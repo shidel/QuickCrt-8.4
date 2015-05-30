@@ -50,6 +50,8 @@ type
 		function GetAutoAdd : boolean; virtual;
 		procedure SetAutoAdd (AValue : boolean); virtual;
 		procedure Clear; virtual;
+		procedure DeleteSection; virtual;
+		procedure DeleteKey(AItem : String); virtual;
 	end;
 	
 {$ENDIF}
@@ -410,5 +412,24 @@ end;
 procedure TConfigFile.Clear;
 begin
 	FList.Clear;
+end;
+
+procedure TConfigFile.DeleteSection;
+begin
+	if Not Assigned(FSectionKey) then exit;
+	FList.Remove(FSectionKey);
+	Dispose(FSectionKey, Destroy);
+	FSectionKey := nil;
+	FModified := True;
+end;
+
+procedure TConfigFile.DeleteKey;
+var
+	P : PListItem;
+begin
+	P := FindKey(AItem);
+	if not Assigned(P) then exit;
+	PListItem(P^.Parent)^.Remove(P);
+	Dispose(P, Destroy);
 end;
 {$ENDIF}

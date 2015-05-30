@@ -177,6 +177,9 @@ begin
 	if not Assigned(AItem) then exit;
 	if AItem^.Parent <> @Self then exit; 
 	
+	if FLastFound = AItem then
+		FLastFound := AItem^.Next;
+		
 	if Assigned(AItem^.Prior) then
 		AItem^.Prior^.Next := AItem^.Next;
 	if Assigned(AItem^.Next) then
