@@ -710,23 +710,34 @@ begin
 end;
 
 procedure TListView.DeleteItem;
+var
+	TP, TN : PListItem;
 begin
+	TP := FTop^.Prior;
+	TN := FTop^.Next;
 	if AItem = FCurrent then begin
 		if Assigned(FCurrent^.Next) then begin 
 			FCurrent := FCurrent^.Next;
-			Inc(FIndex);
+			{Inc(FIndex); Will be wrong because it is being moved up one }
 		end else if Assigned(FCurrent^.Prior) then begin
 			FCurrent := FCurrent^.Prior;
 			Dec(FIndex);
+			if Assigned(TP) then 
+				FTop := TP;
 		end else 
 			ClearItems;
 	end;
 	if FItems.Count > 0 then begin
 		FItems.Remove(AItem);
-		if FTop = AItem then
-			FTop := FCurrent;
+		if FTop = AItem then begin
+			if Assigned(TP) then
+				FTop := TP
+			else
+				FTop := TN;
+		end;
 		Dispose(AItem, Destroy);
 	end;
+	FVScroll.SetValue(FIndex); 
 	AdjustSize;
 	Update;
 end;
