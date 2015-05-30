@@ -75,7 +75,7 @@ type
 		procedure ClearItems; virtual;
 		procedure SetAllowEmpty(AValue : boolean); virtual;
 		function GetAllowEmpty : boolean; virtual;
-		
+		procedure DeleteItem(AItem : PListItem); virtual;		
 	end;
 {$ENDIF}
 
@@ -707,5 +707,27 @@ begin
 	if not FUpdating then exit;
 	CheckMarkers(not FAllowNull);
 	inherited EndUpdate;
+end;
+
+procedure TListView.DeleteItem;
+begin
+	if AItem = FCurrent then begin
+		if Assigned(FCurrent^.Next) then begin 
+			FCurrent := FCurrent^.Next;
+			Inc(FIndex);
+		end else if Assigned(FCurrent^.Prior) then begin
+			FCurrent := FCurrent^.Prior;
+			Dec(FIndex);
+		end else 
+			ClearItems;
+	end;
+	if FItems.Count > 0 then begin
+		FItems.Remove(AItem);
+		if FTop = AItem then
+			FTop := FCurrent;
+		Dispose(AItem, Destroy);
+	end;
+	AdjustSize;
+	Update;
 end;
 {$ENDIF}
