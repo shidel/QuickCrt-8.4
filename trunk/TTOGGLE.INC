@@ -56,8 +56,9 @@ constructor TToggle.Create;
 begin
 	inherited Create(AParent, AName);
 	FStr := 'off,ON';
-	FThumb := #$B2#$B2#$B2;
-	FTHumb := #$DB#$DB#$0A#$DB#$DB;
+{	FThumb := #$B2#$B2#$B2;
+	FThumb := #$DB#$DB#$0A#$DB#$DB;}
+	FThumb := #$B0#$B0#$B2#$B0#$B0;
 	FOn := False;
 	FColors[1] := $2F;
 	FColors[0] := $47;
