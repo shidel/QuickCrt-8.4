@@ -1010,6 +1010,7 @@ var
 	A : record
 		H, V : Byte;
 	end;
+	Temp : TBounds;
 begin
 	{$IFDEF DEVLOG_THEMES}
 		WriteLog('Apply Theme to ' + GetPathID );
@@ -1021,8 +1022,9 @@ begin
 		P := PControl(P^.Next);
 	end;
 	AConfig^.OpenSection(GetPathID);
-	FAutoSize := StrBool(AConfig^.GetValue('AUTOSIZE', BoolStr(FAutoSize)));   
-	AConfig^.GetInts('BOUNDS', FCBounds, SizeOf(FCBounds) div SizeOf(Integer));
+	FAutoSize := StrBool(AConfig^.GetValue('AUTOSIZE', BoolStr(FAutoSize)));  
+	Temp := FRBounds; 
+	AConfig^.GetInts('BOUNDS', Temp, SizeOf(Temp) div SizeOf(Integer));
 	AConfig^.GetInts('MARGINS', FMargin, SizeOf(FMargin) div SizeOf(Integer));
 	AConfig^.GetInts('COLORS', FAttr, SizeOf(FAttr) div SizeOf(Integer));	
 	AConfig^.GetValue('CLASS', GetClassID + ' (Informational only)');	
@@ -1037,7 +1039,10 @@ begin
 		FHAlign := THorizontalAlign(A.H);
 		FVAlign := TVerticalAlign(A.V);
 	end;
-	FVisible := StrBool(AConfig^.GetValue('VISIBLE', BoolStr(FVisible)));   
+	FVisible := StrBool(AConfig^.GetValue('VISIBLE', BoolStr(FVisible)));  
+	if (Temp.Left <> FRBounds.Left) or (Temp.Top <> FRBounds.Top) or
+	(Temp.Width <> FRBounds.Width) or (Temp.Height <> FRBounds.Height) then
+		SetBounds(Temp);
 	{$IFDEF DEVLOG_THEMES}
 		LogDec;
 	{$ENDIF}
