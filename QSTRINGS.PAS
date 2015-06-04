@@ -107,6 +107,8 @@ interface
   the result. }
   function PullChars(Count : Integer; var S : String) : String;
   
+  function ReduceStr(S : String; Max : integer) : String;
+  
 type 
 	PString = ^String;
 	
@@ -800,5 +802,91 @@ begin
 	end;
 end;
 
+function ReduceStr(S : String; Max : integer) : String;
+const
+	Vowels : String = 'aeiouy';
+	Keepers : String = '_-+=';
+var
+	I : Integer;
+	T : String;
+	F, P : boolean;
+begin
+	{ Strip spaces }
+	S := FilterChar(WCase(S), ' ');
+
+	{Strip lower case vowels on at a time}
+	I := 0;
+	while (Length(S) > Max) and (I < Length(Vowels)) do begin
+		Inc(I);
+		S := FilterChar(S, Vowels[I]);
+	end;
+	
+	{ remove all special chars }
+	I := Length(S);
+	while (I > 0) and (Length(S) > Max) do begin
+		if (S[I] > #$81) or (S[I] < #$20) then 
+			Delete(S, I, 1);
+		Dec(I);
+	end;
+
+	{ remove all non letters }
+	I := Length(S);
+	while (I > 0) and (Length(S) > Max) do begin
+		if ((UCase(S[I]) > 'Z') or (UCase(S[I]) < 'A')) and 
+		((Pos(S[I], Keepers) < 1) or ((I = 1) or (I = Length(S)))) then 
+			Delete(S, I, 1);
+		Dec(I);
+	end;
+	
+	{ remove repeating letters }
+	I := Length(S);
+	while (Length(S) > Max) and (I > 1) do begin
+		Dec(I);
+		if UCase(S[I]) = UCase(S[I + 1]) then
+			Delete(S, I, 1);
+	end;
+	
+	{ remove lowercase letters from words one at a time }
+	F := True;
+	while (Length(S) > Max) and F do begin
+		F := False;
+		I := Length(S);
+		P := True;
+		while I >2 do begin
+			Dec(I);
+			if S[I] = UCase(S[I]) then
+				P := True
+			else if P then begin
+				P := False;
+				F := True;
+				Delete(S, I, 1);
+			end;
+		end;
+	end;
+	
+	{Strip upper case vowels on at a time}
+	T := UCase(Vowels);
+	I := 0;
+	while (Length(S) > Max) and (I < Length(T)) do begin
+		Inc(I);
+		S := FilterChar(S, T[I]);
+	end;
+
+   { remove repeating letters }
+    P := True;
+    while P do begin
+    	P := False;
+		I := Length(S);
+		while (Length(S) > Max) and (I > 1) do begin
+			Dec(I);
+			if UCase(S[I]) = UCase(S[I + 1]) then begin
+				Delete(S, I, 1);
+				P := True;
+			end;
+		end;
+	end;
+		
+	ReduceStr := Copy(UCase(S), 1, 8);
+end;
 
 end.
