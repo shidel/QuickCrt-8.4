@@ -114,8 +114,6 @@ var
 
 implementation
 
-{$DEFINE IMPLEMENTATION}
-
 uses QErrors, QDos, QFiles, QFmtStr;
 
 	var
@@ -126,6 +124,8 @@ uses QErrors, QDos, QFiles, QFmtStr;
 		PBuffer : Pointer;
 		PSize : integer;
 		ShowMemFlag : boolean;
+
+{$DEFINE IMPLEMENTATION}
 
 {$I DCOMMENTS.INC}
 {$I DKEYNAME.INC}
