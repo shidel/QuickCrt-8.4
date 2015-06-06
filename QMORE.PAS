@@ -26,12 +26,13 @@ uses
 
 implementation
 
-{$DEFINE IMPLEMENTATION}
-
 uses QErrors, QFiles, QFmtStr, QStrings;
+
+{$DEFINE IMPLEMENTATION}
 
 {$I TKeyStroke.inc}
 {$I TCharacterMap.Inc}
 
 {$UNDEF IMPLEMENTATION}
+
 end.
