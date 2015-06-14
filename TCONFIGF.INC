@@ -296,8 +296,16 @@ begin
 end;
 
 function TConfigFile.GetValue(AItem, ADefault : String) : String; 
+{$IFDEF TEMPLATES} {$IFDEF ONDISK}
+	const
+		FLastSection : pointer = nil;
+{$ENDIF} {$ENDIF}
 var
 	P : PListItem;
+	{$IFDEF TEMPLATES} {$IFDEF ONDISK}
+	F : TFIle;
+	S : String;
+	{$ENDIF} {$ENDIF}
 begin
 	P := FindKey(AItem);
 	if Assigned(P) and Assigned(P^.First) then
@@ -305,11 +313,35 @@ begin
 	else
 		GetValue := ADefault;
 	{$IFDEF TEMPLATES}
-	if (not Assigned(P)) then
-		SetValue(AItem, ADefault);
+		{$IFDEF ONDISK}
+			if (not Assigned(P)) and FAutoAdd then
+				SetValue(AItem, ADefault)
+			else if Assigned(FSectionKey) then begin
+				F.Create;
+				F.Assign(Dir(PathOf(FFileName)) + 'ONDISK.' + FileExtension(FFileName));
+				F.Reset;
+				if F.IOResult <> 0 then begin
+					F.Close;
+					F.Rewrite;
+				end;
+				F.SeekEOF;
+				if FLastSection <> FSectionKey then begin
+					S := '[' + FSectionKey^.GetNameID + ']' + #$0d#$0a;
+					F.Write(S);
+				end;
+				FLastSection := FSectionKey;
+				S := #9 + AItem + '=' + ADefault + #$0d#$0a;
+				F.Write(S);
+				F.Close;
+				F.Destroy;
+			end;
+		{$ELSE}
+			if (not Assigned(P)) then
+				SetValue(AItem, ADefault);
+		{$ENDIF}
 	{$ELSE}
-	if (not Assigned(P)) and FAutoAdd then
-		SetValue(AItem, ADefault);
+		if (not Assigned(P)) and FAutoAdd then
+			SetValue(AItem, ADefault);
 	{$ENDIF}
 end;
 
@@ -318,12 +350,15 @@ var
 	P : PListItem;
 begin
 	if not assigned(FSectionKey) then exit;
-	{$IFDEF TEMPLATES}
-	{$ENDIF}
 	P := FindKey(AItem);
 	if not Assigned(P) then begin
 		P := New(PListItem, Create(UCase(Trim(AItem))));
 		FSectionKey^.Add(P);
+	{$IFDEF TEMPLATES}
+	{end else begin
+		if (P^.Count = 1) and (P^.First^.GetNameID = AValue) then 
+			Exit;}
+	{$ENDIF}
 	end;
 	P^.Clear;
 	P^.Add(New(PListItem, Create(AValue)));
