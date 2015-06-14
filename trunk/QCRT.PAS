@@ -220,6 +220,10 @@ interface
 	cmReturn		= $0106;
 	cmEscape		= $0107;
 	cmInsert		= $0108;
+	cmClear			= $0109;
+	cmAdd			= $010A;
+	cmModify		= $010B;
+	cmRemove		= $010C;
   { Predefined Keyboard Navigation Commands }
 	cmLeft			= $0110;
 	cmRight			= $0111;
