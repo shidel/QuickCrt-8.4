@@ -83,7 +83,7 @@ begin
 		SetCommand(cmOk);
 	end;
 	TextAttr := $4E;
-	FBMkDir.Create(@Self, 'BUTTON.MakeDir');
+	FBMkDir.Create(@Self, 'BUTTON.MAKEDIR');
 	with FBMkDir do begin
 		SetFreeOnDestroy(False); 
 		B.Top := 3;
@@ -96,7 +96,7 @@ begin
 	
 	Bounds(3,3, B.Left - 5, 10, B);
 	TextAttr := $1E;
-	FPath.Create(@Self, 'Path');
+	FPath.Create(@Self, 'PATH');
 	with FPath do begin
 		SetFreeOnDestroy(False); 
 		SetBounds(B);
@@ -105,7 +105,7 @@ begin
 	
 	Bounds(B.Left, B.Top + 2, B.Width, Height - B.Top - 4, B);
 	TextAttr := $1E;
-	FDirs.Create(@Self, 'Directory');
+	FDirs.Create(@Self, 'DIRECTORY');
 	with FDirs do begin
 		SetFreeOnDestroy(False); 
 		SetBounds(B);

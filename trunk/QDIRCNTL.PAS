@@ -7,7 +7,7 @@
 	
 *)
 
-unit QFileDlg; { QuickCrt File Dialog Boxes }
+unit QDirCntl; { QuickCrt Directory and File based Controls }
 {$I QCRT.DEF}
 interface
 
@@ -15,13 +15,11 @@ interface
 
 uses 
    {$IFDEF DEVLOG} QLog, {$ENDIF} 
-	QCrt, QObjects, QControls, QDirCntl;
+	QCrt, QObjects, QControls;
 	
 	
-{$I TPATHDIALOG.INC}
-{$I TFILEDIALOG.INC}
-{$I TOPENDIALOG.INC}
-{$I TSAVEDIALOG.INC}
+{$I TDIRDROPLIST.INC}
+{$I TDIRLIST.INC}
 
 {$UNDEF INTERFACE}
 
@@ -31,10 +29,8 @@ implementation
 
 uses QErrors, QFiles, QFmtStr, QDos, QStrings;
 
-{$I TPATHDIALOG.INC}
-{$I TFILEDIALOG.INC}
-{$I TOPENDIALOG.INC}
-{$I TSAVEDIALOG.INC}
+{$I TDIRDROPLIST.INC}
+{$I TDIRLIST.INC}
 
 {$UNDEF IMPLEMENTATION}
 
