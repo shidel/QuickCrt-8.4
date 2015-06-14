@@ -17,7 +17,6 @@ uses
    {$IFDEF DEVLOG} QLog, {$ENDIF} 
 	QCrt, QObjects, QControls, QDirCntl;
 	
-	
 {$I TPATHDIALOG.INC}
 {$I TFILEDIALOG.INC}
 {$I TOPENDIALOG.INC}
