@@ -48,7 +48,7 @@ const
 	);
 	
 const
-	DefaultCommandNamesMax = 66;
+	DefaultCommandNamesMax = 70;
 	DefaultCommandNames : array[0..DefaultCommandNamesMax] of Str25 = (
 		{ System/Environment Commands }
 		'None=$0000',
@@ -74,6 +74,10 @@ const
 		'Return=$0106',
 		'Escape=$0107',
 		'Insert=$0108',
+		'Clear=$0109',
+		'Add=$010A',
+		'Modify=$010B',
+		'Remove=$010C',
 		{ Keyboard Navigation Commands }
 		'Left=$0110',
 		'Right=$0111',
