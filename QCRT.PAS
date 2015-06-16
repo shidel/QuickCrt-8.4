@@ -224,6 +224,7 @@ interface
 	cmAdd			= $010A;
 	cmModify		= $010B;
 	cmRemove		= $010C;
+	
   { Predefined Keyboard Navigation Commands }
 	cmLeft			= $0110;
 	cmRight			= $0111;
