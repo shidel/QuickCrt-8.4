@@ -199,8 +199,11 @@ begin
 						FinishDrawing;
 					end;
 					UpdateButtons;
+				end else begin
+					FPath.FEdit.SetCaption(GetDir);
+					FPath.Update;
 				end;
-					ClearEvent(AEvent);
+				ClearEvent(AEvent);
 			end;
 		end;
 	inherited CheckLocal(AEvent);
