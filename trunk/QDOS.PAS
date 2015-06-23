@@ -1457,7 +1457,7 @@ var
 	I : integer;
 begin
 	I := LastPos('.', AFilename);
-	if I < Length(AFileName) - 3 then 
+	if (I < Length(AFileName) - 3) or (I < 1) then 
 		FileExtension := ''
 	else
 		FileExtension := UCase(Copy(AFileName, I + 1, 3));
