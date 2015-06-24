@@ -60,11 +60,17 @@ type
 	TDAC = array[0..255] of record
 		R, G, B : byte;
 	end;
+	TPalettes = record
+		Pallete : array[0..15] of byte;
+		Overscan : Byte;
+	end;
 	
 	procedure ReadDAC( First, Count : word; var Buffer );
 	procedure WriteDAC( First, Count : word; var Buffer );
 	procedure FadeOutDAC( First, Count : word; var Buffer ); 
 	procedure FadeInDAC( First, Count : word; var Buffer ); 
+	procedure GetPalette(var Buffer);
+	procedure SetPalette(var Buffer);
 	
 implementation
 
@@ -463,6 +469,28 @@ asm
 {	LES  BX, DWORD PTR A
 	MOV  ES:[BX], CX
 	MOV  ES:[BX + 2], DX }
+end;
+
+procedure SetPalette(var Buffer); assembler;
+asm
+	XOR BX, BX
+	MOV AX, 1002h
+	LES DX, Buffer
+	INT 10h
+end;
+
+procedure GetPalette(var Buffer); assembler;
+asm
+	LES  DX, Buffer
+	MOV	 CX, 17
+	MOV  BX, DX
+	MOV  AL, 0FFh
+@@Clear:
+	MOV	  ES:[BX], AL
+	INC   BX
+	LOOP  @@Clear
+	MOV  AX, 1009h
+	INT 10h
 end;
 
 end.
