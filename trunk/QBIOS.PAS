@@ -57,11 +57,12 @@ interface
 	function GetROMFontPtr(Mode : TROMFont) : Pointer; 
 
 type
-	TDAC = array[0..255] of record
+	TRGB = record
 		R, G, B : byte;
 	end;
-	TPalettes = record
-		Pallete : array[0..15] of byte;
+	TDAC = array[0..255] of TRGB;
+	TPalette = record
+		Palette : array[0..15] of byte;
 		Overscan : Byte;
 	end;
 	
