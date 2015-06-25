@@ -16,7 +16,7 @@ interface
 
 uses 
    {$IFDEF DEVLOG} QLog, {$ENDIF} 
-	QCrt, QStrings, QInfo, QObjects;
+	QCrt, QStrings, QInfo, QObjects, QClass;
 		
 {$I TControl.inc}
 {$I TLabel.inc}

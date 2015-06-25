@@ -57,6 +57,7 @@ type
 		procedure CreateAllDialogs(ConserveMemory : boolean); virtual; 
 		{ Only used when making Templates, Slow and major memory hog when not given true. }
 		procedure FreeDialog( var ADialog : PDialog ); virtual;
+		procedure FreeAllDialogs; virtual;
 		function GetCommandName( ACode : word ) : String; virtual;
 		function GetKeyName( ACode : TKeyValue ) : String; virtual;
 		function GetCommandCode( ACommand : string ) : word; virtual;
@@ -64,6 +65,10 @@ type
 		procedure Idle; virtual;
 		procedure SetFocused(AControl : PControl); virtual;
 		function GetFocused : PControl; virtual;
+		{$IFDEF TEMPLATES}
+		procedure OnDisk(AObject : PObject); virtual;
+		procedure WriteOnDisk(AConfig : TConfigFile; Section : String); virtual;
+		{$ENDIF}
 	end;
 {$ENDIF}
 
@@ -162,10 +167,31 @@ end;
 procedure TApplication.FreeDialog;
 begin
 	if not assigned(ADialog) then exit;
+	{$IFDEF TEMPLATES}
+		OnDisk(ADialog);
+	{$ENDIF}
 	if Assigned(ADialog^.Parent) then 
 		PListItem(ADialog^.Parent)^.Remove(ADialog);
 	Dispose(ADialog, Destroy);
 	ADialog := nil;	
+end;
+
+procedure TApplication.FreeAllDialogs;
+var
+	P, N : PListItem;
+begin
+	P := First;
+	while Assigned(P) do begin
+		N := P^.Next;
+		if P^.ClassOf(class_TDialog) then begin
+			{$IFDEF TEMPLATES}
+				OnDisk(P);
+			{$ENDIF}
+			if Assigned(P^.Parent) then Remove(P);
+			Dispose(P, Destroy);
+		end;
+		P := N;
+	end;
 end;
 
 procedure TApplication.Configure;
@@ -253,9 +279,10 @@ begin
 			GetMem(FDefaultDAC, Sizeof(TDac));
 		ReadDac(0,256,FDefaultDAC^);
 		if Not MemCheck(Sizeof(TDac)) then Halt(erInsufficient_Memory);				
-		if not Assigned(FUserDAC) then
+		if not Assigned(FUserDAC) then begin
 			GetMem(FUserDAC, Sizeof(TDac));
-		Move(FDefaultDAC^, FUserDAC^, Sizeof(TDac));
+			Move(FDefaultDAC^, FUserDAC^, Sizeof(TDac));
+		end;
 	end;
 	
 	{$IFDEF TEMPLATES}
@@ -693,16 +720,128 @@ begin
 end;
 
 procedure TApplication.ApplyTheme( AConfig : PConfigFile );
+var
+	Pal : TPalette;
+	Dac : TDac;
+	I	: integer;
+	RGB : TRGB;
+	IRGB : record 
+		R, G, B : integer;
+	end;
+{$IFNDEF TEMPLATES}
+	Flag : boolean;
+{$ENDIF}
 begin
 	inherited ApplyTheme(AConfig);
 	FStartTone := AConfig^.GetValue('TONE.START', FStartTone);	
-	FEndTone := AConfig^.GetValue('TONE.END', FEndTone);	
+	FEndTone := AConfig^.GetValue('TONE.END', FEndTone);
+	ReadDac(0, 256, Dac);
+	GetPalette(Pal);
+	{$IFDEF TEMPLATES}
+		for I := 0 to 15 do begin
+			RGB := Dac[Pal.Palette[I]];
+			IRGB.R := RGB.R;
+			IRGB.G := RGB.G;
+			IRGB.B := RGB.B;
+			AConfig^.SetInts('PALETTE.' + HexStr(I), IRGB, 3);		
+		end;
+	{$ELSE}
+		Flag := False;
+		for I := 0 to 15 do begin
+			RGB := Dac[Pal.Palette[I]];
+			IRGB.R := RGB.R;
+			IRGB.G := RGB.G;
+			IRGB.B := RGB.B;
+			AConfig^.GetInts('PALETTE.' + HexStr(I), IRGB, 3);		
+			RGB.R := IRGB.R and $3F;
+			RGB.G := IRGB.G and $3F;
+			RGB.B := IRGB.B and $3F;
+			if (RGB.R <> Dac[Pal.Palette[I]].R) or (RGB.G <> Dac[Pal.Palette[I]].G)
+			or (RGB.B <> Dac[Pal.Palette[I]].B) then begin
+				Dac[Pal.Palette[I]] := RGB;
+				Flag := True;
+			end;
+		end;
+		if Flag then begin
+			if not Assigned(FUserDAC) then
+				GetMem(FUserDAC, Sizeof(TDac));
+			Move(DAC, FUserDAC^, Sizeof(TDac));
+		end;
+	{$ENDIF}
 end;
 
 function TApplication.GetKeyName( ACode : TKeyValue ) : String; 
 begin
 	GetKeyName := ''; { Later Maybe }
 end;
+
+{$IFDEF TEMPLATES}
+procedure TApplication.OnDisk(AObject : PObject);
+var
+	N : PListItem;
+	Section : String;
+begiN
+	{$IFDEF ONDISK}
+		N := PListItem(AObject)^.First;
+		while Assigned(N) do begin
+			OnDisk(N);	
+			N := N^.Next;
+		end;
+		Section := AObject^.GetPathId;
+		{WriteOnDisk(FConfig, Section);}
+		{WriteOnDisk(FLanguage, Section);}
+		WriteOnDisk(FTheme, Section);
+		{WriteOnDisk(FKeyboard, Section);}
+	{$ENDIF}
+end;
+
+procedure TApplication.WriteOnDisk(AConfig : TConfigFile; Section : String);
+var
+	F : TFile;
+	S,O : String;
+	P, J, K : PListItem;
+begin
+	if Assigned(AConfig.FSectionKey) then O := AConfig.FSectionKey^.GetNameID else O := '';
+	K := AConfig.FList.FindID(Section);
+	if Assigned(K) then begin
+		F.Create;
+		F.Assign(Dir(PathOf(AConfig.FFileName)) + 'ONDISK.' + FileExtension(ACOnfig.FFileName));
+		F.Reset;
+		if F.IOResult <> 0 then begin
+			F.Close;
+			F.Rewrite;
+		end;
+		F.SeekEOF;
+		S := '[' + K^.GetNameID + ']' + #$0d#$0a;
+		{WriteLn(Copy(S, 1, Length(S) - 2));  }
+		F.Write(S);
+		P := K^.First;
+		while assigned(P) do begin
+			J := P^.First;
+			if Assigned(J) then begin
+				S := #9 + P^.GetNameID + '=' + J^.GetNameID + #$0d#$0a;
+				{WriteLn(Copy(S, 1, Length(S) - 2));  }
+				F.Write(S);
+				J := J^.Next;
+				while Assigned(J) do begin
+					S := #9#9 + '+=' + J^.GetNameID + #$0d#$0a;
+					{WriteLn(Copy(S, 1, Length(S) - 2));  }
+					F.Write(S);
+					J := J^.Next;
+				end;
+			end;
+			P := P^.Next;
+		end;
+		K^.Clear;
+		if (O <> '') and (O <> Section) then begin
+			O := '[' + O + ']' + #$0d#$0a;
+			F.Write(O);
+		end;
+		F.Close;
+		F.Destroy;
+	end;
+end;
+{$ENDIF}
 
 
 {$ENDIF}
