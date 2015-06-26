@@ -185,7 +185,8 @@ end;
 
 procedure TDropList.AddItem( AValue : String); 
 begin
-	FList.AddItem(AValue);
+	if FList.FList.FItems.FindID(AValue) = nil then
+		FList.AddItem(AValue);
 end;
 
 procedure TDropList.SetSorted(AValue : boolean);
