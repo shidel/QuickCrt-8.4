@@ -36,7 +36,6 @@ type
 		FFileAttrs : array[0..5] of TTextAttrs;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure SetDir(AValue : String); virtual;
 		function GetDir : String; virtual;
 		procedure SetFilter(AValue : String); virtual;
@@ -101,11 +100,6 @@ begin
 					Focused := (Normal and $07) + $08 + (Normal and $07) shl 4;
 					Click := $09 or ((Normal and $80) shr 4) + (Normal and $07) shl 4;
 				end;
-end;
-
-destructor TDirList.Destroy; 
-begin
-	inherited Destroy;
 end;
 
 procedure TDirList.SetDir(AValue : String);

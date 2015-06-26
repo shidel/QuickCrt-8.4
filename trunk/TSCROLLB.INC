@@ -34,7 +34,6 @@ type
 		procedure CheckMouse(var AEvent : TEvent); virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure Draw; virtual;
 		procedure SetValue(AValue : integer); virtual;
 		function GetValue : integer; virtual;
@@ -73,11 +72,6 @@ begin
 	FThumb := #$B0 { + #$B1#$B2} + #$B2 {+ #$B2#$B1} + #$B0;
 	FThumbColor := FAttr.Normal;
 	FTrigger := cmScrollBar;
-end;
-
-destructor TScrollBar.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TScrollBar.ApplyTheme( AConfig : PConfigFile );

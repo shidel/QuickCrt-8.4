@@ -28,7 +28,6 @@ type
 		procedure UpdateChar(C : integer; Toggle: boolean); virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure Draw; virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 	end;
@@ -69,11 +68,6 @@ begin
 	AddHelpText('');
 	AddHelpText('It can aid in the selection of characters that are outside of the');
 	AddHelpText('range of normal keystroke combinations.');
-end;
-
-destructor TCharacterMap.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TCharacterMap.Draw;
@@ -141,5 +135,4 @@ begin
 	inherited ApplyTheme(AConfig);
 	AConfig^.GetInts('HEXCOLORS', FColors, SizeOf(FColors) div SizeOf(Integer));
 end;
-
 {$ENDIF}

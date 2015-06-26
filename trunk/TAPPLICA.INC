@@ -776,72 +776,71 @@ begin
 end;
 
 {$IFDEF TEMPLATES}
-procedure TApplication.OnDisk(AObject : PObject);
-var
-	N : PListItem;
-	Section : String;
-begiN
-	{$IFDEF ONDISK}
-		N := PListItem(AObject)^.First;
-		while Assigned(N) do begin
-			OnDisk(N);	
-			N := N^.Next;
-		end;
-		Section := AObject^.GetPathId;
-		{WriteOnDisk(FConfig, Section);}
-		{WriteOnDisk(FLanguage, Section);}
-		WriteOnDisk(FTheme, Section);
-		{WriteOnDisk(FKeyboard, Section);}
-	{$ENDIF}
-end;
+	procedure TApplication.OnDisk(AObject : PObject);
+	var
+		N : PListItem;
+		Section : String;
+	begiN
+		{$IFDEF ONDISK}
+			N := PListItem(AObject)^.First;
+			while Assigned(N) do begin
+				OnDisk(N);	
+				N := N^.Next;
+			end;
+			Section := AObject^.GetPathId;
+			{WriteOnDisk(FConfig, Section);}
+			{WriteOnDisk(FLanguage, Section);}
+			WriteOnDisk(FTheme, Section);
+			{WriteOnDisk(FKeyboard, Section);}
+		{$ENDIF}
+	end;
 
-procedure TApplication.WriteOnDisk(AConfig : TConfigFile; Section : String);
-var
-	F : TFile;
-	S,O : String;
-	P, J, K : PListItem;
-begin
-	if Assigned(AConfig.FSectionKey) then O := AConfig.FSectionKey^.GetNameID else O := '';
-	K := AConfig.FList.FindID(Section);
-	if Assigned(K) then begin
-		F.Create;
-		F.Assign(Dir(PathOf(AConfig.FFileName)) + 'ONDISK.' + FileExtension(ACOnfig.FFileName));
-		F.Reset;
-		if F.IOResult <> 0 then begin
-			F.Close;
-			F.Rewrite;
-		end;
-		F.SeekEOF;
-		S := '[' + K^.GetNameID + ']' + #$0d#$0a;
-		{WriteLn(Copy(S, 1, Length(S) - 2));  }
-		F.Write(S);
-		P := K^.First;
-		while assigned(P) do begin
-			J := P^.First;
-			if Assigned(J) then begin
-				S := #9 + P^.GetNameID + '=' + J^.GetNameID + #$0d#$0a;
-				{WriteLn(Copy(S, 1, Length(S) - 2));  }
-				F.Write(S);
-				J := J^.Next;
-				while Assigned(J) do begin
-					S := #9#9 + '+=' + J^.GetNameID + #$0d#$0a;
+	procedure TApplication.WriteOnDisk(AConfig : TConfigFile; Section : String);
+	var
+		F : TFile;
+		S,O : String;
+		P, J, K : PListItem;
+	begin
+		if Assigned(AConfig.FSectionKey) then O := AConfig.FSectionKey^.GetNameID else O := '';
+		K := AConfig.FList.FindID(Section);
+		if Assigned(K) then begin
+			F.Create;
+			F.Assign(Dir(PathOf(AConfig.FFileName)) + 'ONDISK.' + FileExtension(ACOnfig.FFileName));
+			F.Reset;
+			if F.IOResult <> 0 then begin
+				F.Close;
+				F.Rewrite;
+			end;
+			F.SeekEOF;
+			S := '[' + K^.GetNameID + ']' + #$0d#$0a;
+			{WriteLn(Copy(S, 1, Length(S) - 2));  }
+			F.Write(S);
+			P := K^.First;
+			while assigned(P) do begin
+				J := P^.First;
+				if Assigned(J) then begin
+					S := #9 + P^.GetNameID + '=' + J^.GetNameID + #$0d#$0a;
 					{WriteLn(Copy(S, 1, Length(S) - 2));  }
 					F.Write(S);
 					J := J^.Next;
+					while Assigned(J) do begin
+						S := #9#9 + '+=' + J^.GetNameID + #$0d#$0a;
+						{WriteLn(Copy(S, 1, Length(S) - 2));  }
+						F.Write(S);
+						J := J^.Next;
+					end;
 				end;
+				P := P^.Next;
 			end;
-			P := P^.Next;
+			K^.Clear;
+			if (O <> '') and (O <> Section) then begin
+				O := '[' + O + ']' + #$0d#$0a;
+				F.Write(O);
+			end;
+			F.Close;
+			F.Destroy;
 		end;
-		K^.Clear;
-		if (O <> '') and (O <> Section) then begin
-			O := '[' + O + ']' + #$0d#$0a;
-			F.Write(O);
-		end;
-		F.Close;
-		F.Destroy;
 	end;
-end;
-{$ENDIF}
-
+	{$ENDIF}
 
 {$ENDIF}

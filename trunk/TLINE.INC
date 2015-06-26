@@ -22,7 +22,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure SetStyle(AValue : integer); virtual;
 		function GetStyle : integer; virtual;
 		procedure Draw; virtual;		
@@ -48,11 +47,6 @@ begin
 	FStyle := lnSingle or lnHorizontal;
 	FTextAlign := False;
 	FAttr.Click := FAttr.Normal;
-end;
-
-destructor TLine.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TLine.SetStyle(AValue : integer);

@@ -25,7 +25,6 @@ type
 		
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure Draw; virtual;		
 	end;
 	{$ENDIF}
@@ -49,11 +48,6 @@ begin
 	Bounds(1, 1, 32, 2, Temp);
 	SetBounds(Temp);
 	FillChar(FLastCode, 0, Sizeof(FLastCode));
-end;
-
-destructor TKeyStroke.Destroy; 
-begin
-	inherited Destroy;
 end;
 
 procedure TKeyStroke.Draw;

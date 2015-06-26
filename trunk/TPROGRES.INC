@@ -28,8 +28,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
-		
 		procedure SetProgress(AValue : integer); virtual;
 		function GetProgress : integer; virtual;
 		procedure Draw; virtual;		
@@ -60,11 +58,6 @@ begin
 	FPercent := '';
 	SetPercentText('0;%0%%');
 	FTextAlign := True;
-end;
-
-destructor TProgressBar.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TProgressBar.SetProgress(AValue : integer);
@@ -164,6 +157,4 @@ begin
 	FTextWidth := Length(FormatStr(FPercent, D, 1)) + 1;
 	Refresh;
 end;
-
-
 {$ENDIF}

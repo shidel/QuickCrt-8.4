@@ -24,7 +24,6 @@ type
 		procedure AddHelpFrom(AControl : PCOntrol);
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		
 		procedure ShowHelp(AValue : PControl); virtual;
 		procedure BuildHelp; virtual;
@@ -90,11 +89,6 @@ begin
 	FText.Sorted := False;
 	HelpSection := nil;
 	TextAttr := C;
-end;
-
-destructor THelp.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure THelp.SetCurrentBounds(AValue : TBounds);

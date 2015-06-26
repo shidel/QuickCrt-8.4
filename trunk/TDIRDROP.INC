@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -52,10 +51,5 @@ begin
 	end;
 	GetDir(0, S);
 	FEdit.SetCaption(Dir(S));
-end;
-
-destructor TDirDropList.Destroy; 
-begin
-	inherited Destroy;
 end;
 {$ENDIF}

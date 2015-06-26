@@ -28,7 +28,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		function Checked : boolean; virtual;
 		function GetState : integer; virtual;
@@ -57,11 +56,6 @@ begin
 	FColorStr := FStateStr;
 	FillChar(FColorStr[1], Length(FColorStr), TextAttr);
 	FTrigger := cmCheckbox;
-end;
-
-destructor TCheckBox.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TCheckBox.ApplyTheme( AConfig : PConfigFile ); 
@@ -146,5 +140,4 @@ begin
 	TextAttr := C;
 	FWrite(FPadStr + GetCaption);
 end;
-
 {$ENDIF}

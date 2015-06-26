@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PComponent; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -38,10 +37,4 @@ begin
 	inherited Create(AName);
 	if Assigned(AParent) then AParent^.Add(@Self);
 end;
-
-destructor TComponent.Destroy;
-begin
-	inherited Destroy;
-end;
-
 {$ENDIF}

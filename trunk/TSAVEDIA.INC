@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 
 {$ENDIF}
@@ -56,10 +55,5 @@ begin
 	AddHelpText('that contains wildcards, it will be added as a user filter.');
 	AddHelpText('');
 
-end;
-
-destructor TSaveDialog.Destroy;
-begin
-	inherited Destroy;
 end;
 {$ENDIF}

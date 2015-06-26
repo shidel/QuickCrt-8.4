@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -37,10 +36,4 @@ constructor TMemo.Create;
 begin
 	inherited Create(AParent, AName);
 end;
-
-destructor TMemo.Destroy;
-begin
-	inherited Destroy;
-end;
-
 {$ENDIF}

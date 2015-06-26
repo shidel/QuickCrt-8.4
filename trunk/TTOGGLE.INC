@@ -30,7 +30,6 @@ type
 		procedure TriggerHook; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		procedure ApplyLanguage( AConfig : PConfigFile ); virtual;
 		function GetText : String; virtual;
@@ -64,11 +63,6 @@ begin
 	FColors[0] := $47;
 	FUseCaption := False;
 	FTrigger := cmToggle;
-end;
-
-destructor TToggle.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TToggle.ApplyTheme( AConfig : PConfigFile );

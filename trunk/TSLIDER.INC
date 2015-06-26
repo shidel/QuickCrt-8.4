@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -40,10 +39,4 @@ begin
 	FEndOver := True;
 	FThumb := #$DB#$DB#$DB;
 end;
-
-destructor TSlider.Destroy;
-begin
-	inherited Destroy;
-end;
-
 {$ENDIF}

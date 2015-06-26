@@ -24,7 +24,6 @@ type
 		procedure CheckLocal(var AEvent : TEvent); virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -49,11 +48,6 @@ begin
 	FVisible := False;
 	FAnchors := alNone;
 	SetHelpText('0,1; %0 is a simple dialog box.');
-end;
-
-destructor TDialog.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TDialog.SetCurrentBounds(AValue : TBounds);
@@ -101,5 +95,4 @@ begin
 		end;
 	inherited CheckLocal(AEvent);
 end;
-
 {$ENDIF}
