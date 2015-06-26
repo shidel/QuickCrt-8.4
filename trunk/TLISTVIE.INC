@@ -47,6 +47,7 @@ type
 		procedure CheckMouse(var AEvent : TEvent); virtual;
 		procedure CheckMarkers(FNoNill : boolean); virtual;
 		procedure EndUpdate; virtual;
+		procedure AdjustSize; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
 		destructor Destroy; virtual;
@@ -741,4 +742,11 @@ begin
 	AdjustSize;
 	Update;
 end;
+
+procedure TListView.AdjustSize; 
+begin
+	inherited AdjustSize;
+	AdjustBars;
+end;
+
 {$ENDIF}

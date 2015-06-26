@@ -134,13 +134,14 @@ begin
 end;
 
 procedure TPathDialog.SetDir(AValue : String);
+var
+	P : PListItem;
 begin
 	AValue := Dir(trim(AValue));
 	StartDrawing;
 	FDirs.BeginUpdate;
 	FPath.FEdit.SetCaption(AValue);
-	if Assigned(FPath.FList.FList.FCurrent) and (FPath.FList.FList.FCurrent^.GetNameID <> AValue) then
-		FPath.AddItem(AValue);
+	FPath.AddItem(AValue);
 	FPath.Update;
 	FDirs.SetDir(AValue);
 	FDirs.EndUpdate;
