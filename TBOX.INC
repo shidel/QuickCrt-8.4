@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -42,10 +41,5 @@ begin
 	FStyle := bxDouble;
 	AdjustMargins;
 	FAttr.Click := FAttr.Normal;
-end;
-
-destructor TBox.Destroy;
-begin
-	inherited Destroy;
 end;
 {$ENDIF}

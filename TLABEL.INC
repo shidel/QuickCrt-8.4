@@ -30,7 +30,6 @@ type
 	public
 			OnFormat : TFormatProc;
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure SetCaption(AValue: String); virtual;
 		function GetCaption : String; virtual;
 		procedure Draw; virtual;		
@@ -59,11 +58,6 @@ begin
 	OnFormat := nil;
 	FTextAlign := True;
 	FAttr.Click := FAttr.Normal;
-end;
-
-destructor TLabel.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TLabel.SetCaption(AValue: String);

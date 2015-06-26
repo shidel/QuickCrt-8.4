@@ -22,7 +22,6 @@ type
 		procedure CheckLocal(var AEvent : TEvent); virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 	end;
 {$ENDIF}
 
@@ -48,11 +47,6 @@ begin
 	FVisible := False;
 end;
 
-destructor TPopUp.Destroy;
-begin
-	inherited Destroy;
-end;
-
 procedure TPopUp.CheckLocal(var AEvent : TEvent); 
 begin
 	if AEvent.What = evCommand then
@@ -73,5 +67,4 @@ begin
 		end;
 	inherited CheckLocal(AEvent);
 end;
-
 {$ENDIF}

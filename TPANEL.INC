@@ -24,7 +24,6 @@ type
 		procedure AdjustMargins; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure SetBorder(AValue : boolean); virtual;
 		function GetBorder : boolean; virtual;
 		procedure SetShadow(AValue : boolean); virtual;
@@ -53,11 +52,6 @@ begin
 	FShadow := False;
 	FStyle := bxSingle;
 	FTextAlign := False;
-end;
-
-destructor TPanel.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TPanel.AdjustMargins;

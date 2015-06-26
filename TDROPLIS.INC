@@ -218,5 +218,4 @@ procedure TDropList.ClearItems;
 begin
 	FList.ClearItems;
 end;
-
 {$ENDIF}

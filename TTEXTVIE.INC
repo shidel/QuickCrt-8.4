@@ -247,61 +247,6 @@ begin
 	inherited CheckLocal(AEvent);
 end;
 
-{ procedure TTextView.CheckMouse(var AEvent : TEvent); 
-var
-	Hold : TEvent;
-	J, L, MW : integer;
-	P : PListItem;
-	Ref : boolean;
-begin
-	Ref := false;
-	Hold := AEvent;
-	inherited CheckMouse(AEvent);
-	if not GetVisible then exit;
-	if not GetShown then exit;
-	if (Not FMouseOver) or (FVScroll.GetVisible and (Not FScrollEdge) and 
-	(Hold.Where.X - FWindow.Left > Width - FMargin.Left - 2  )) then begin
-		if FLL <> -1 then begin
-			FLL := -1;
-			Refresh;
-		end;
-		FLD := False;
-		exit;
-	end;
-	if Hold.What = evMouseDown then begin
-		FLD := Hold.Double;
-	end;
-	L := Hold.Where.Y - FWindow.Top + 1;
-	MW := Width;
-	if FVScroll.GetVisible and (Not FScrollEdge)  then Dec(MW);
-	if Hold.Where.X - FWindow.Left + 1 > MW then exit;
-	if Hold.What = evMouseUp then begin
-		P := FTop;
-		J := L;
-		if FColumnCount > 0 then Dec(J);
-		while assigned(P) and (J > 1) do begin
-			P := P^.Next;
-			Dec(J);
-		end;
-		if P <> FCurrent then begin
-			Ref := True;
-			FCurrent := P;	
-			if Assigned(P) then begin
-				FVScroll.SetValue(P^.GetIndex + 1);
-				FIndex := P^.GetIndex;
-			end else begin
-				FVScroll.SetValue(0);
-				FIndex := -1;
-			end;
-		end;
-			
-	end;
-	if (L <> FLL) or (Ref) then begin
-		FLL := L;
-		Refresh;
-	end;	
-end; }
-
 procedure TTextView.Up( ARefresh : boolean ); 
 var
 	LI : integer;
@@ -435,5 +380,4 @@ begin
 	AdjustSize;
 	Update;
 end;
-
 {$ENDIF}

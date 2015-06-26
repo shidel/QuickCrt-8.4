@@ -25,7 +25,6 @@ type
 		procedure TriggerHook; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		procedure SetReadOnly(AValue: Boolean); virtual;
 		function GetReadOnly : boolean; virtual;	
@@ -59,11 +58,6 @@ begin
 		end;
 	FEditAttr := FAttr.Normal;
 	FReadOnly := False;
-end;
-
-destructor TEdit.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TEdit.TriggerHook;
@@ -137,5 +131,4 @@ begin
 	GotoXY(1 + X, 1 + Y);
 	FWrite(CropStr(S, W));
 end;
-
 {$ENDIF}

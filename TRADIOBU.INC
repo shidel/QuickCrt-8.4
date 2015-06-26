@@ -22,10 +22,8 @@ type
 	public { protected }
 		function TextWidth : integer; virtual;
 		procedure DoAutoSize; virtual;
-		procedure TriggerHook; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure ApplyTheme( AConfig : PConfigFile ); virtual;
 		procedure SetState (AValue : Integer); virtual;
 		procedure Draw; virtual;
@@ -51,11 +49,6 @@ begin
 	FState := 0;
 	FColorStr := FStateStr;
 	FillChar(FColorStr[1], Length(FColorStr), TextAttr);
-end;
-
-destructor TRadioButton.Destroy;
-begin
-	inherited Destroy;
 end;
 
 procedure TRadioButton.ApplyTheme( AConfig : PConfigFile ); 
@@ -86,11 +79,6 @@ begin
 		SetBounds(B);
 	end else		
 		inherited DoAutoSize;
-end;
-
-procedure TRadioButton.TriggerHook; 
-begin
-	inherited TriggerHook; 
 end;
 
 procedure TRadioButton.SetState (AValue : Integer); 
@@ -134,5 +122,4 @@ begin
 	TextAttr := C;
 	FWrite(FPadStr + GetCaption);
 end;
-
 {$ENDIF}

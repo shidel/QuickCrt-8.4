@@ -20,7 +20,6 @@ type
 		function  ObjectClass ( AName : String ) : String; virtual;
 	public
 		constructor Create(AParent : PControl; AName : String);
-		destructor Destroy; virtual;
 		procedure SetTextAttr(AValue : integer); virtual;
 	end;
 {$ENDIF}
@@ -40,11 +39,6 @@ begin
 	FTextAlign := True;
 end;
 
-destructor TButton.Destroy;
-begin
-	inherited Destroy;
-end;
-
 procedure TButton.SetTextAttr(AValue : integer);
 begin
 	inherited SetTextAttr(AValue);
@@ -59,5 +53,4 @@ begin
 			FAttr.Click := $09 or ((FAttr.Normal and $80) shr 4) + (FAttr.Normal and $07) shl 4;
 		end;
 end;
-
 {$ENDIF}
