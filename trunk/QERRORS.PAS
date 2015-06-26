@@ -101,6 +101,7 @@ const
 	
 const
 	ErrorsOnExit : boolean = true;
+	ErrorClrScr : boolean = true;
 
 function ErrorStr(StrID : word) : String;
 
@@ -234,8 +235,11 @@ begin
 		exit;
 	end;
 	TextAttr := $07;
-	if LastMode and CO80 = CO80 then TextMode(CO80);
-	ClrScr;
+	if LastMode and CO80 <> CO80 then TextMode(CO80);
+	if ErrorClrScr then 
+		ClrScr
+	else
+		WriteLn;
 	TextAttr := $4F;
 	Write(' ERROR: #', ExitCode, ', "', ErrorStr(ExitCode), '" ');
 	ClrEol;
