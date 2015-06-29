@@ -99,6 +99,9 @@ const
 	erTime_Out                         = 1009;
 	erSense_Failure                    = 1010;
 	
+	{ Custom Errors }		
+	erParamError					= 2001;
+	
 const
 	ErrorsOnExit : boolean = true;
 	ErrorClrScr : boolean = true;
@@ -205,6 +208,8 @@ begin
 		$1B0 : S := 'Smaller UMB available';
 		$1B1 : S := 'No UMB''s available';
 		$1B2 : S := 'Invalid UMB segment';
+		
+		erParamError : S := 'Invalid or missing command line parameter';
 
 	else
 		S := 'unknown error code';
