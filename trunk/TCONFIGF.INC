@@ -466,5 +466,6 @@ begin
 	if not Assigned(P) then exit;
 	PListItem(P^.Parent)^.Remove(P);
 	Dispose(P, Destroy);
+	FModified := true;
 end;
 {$ENDIF}
