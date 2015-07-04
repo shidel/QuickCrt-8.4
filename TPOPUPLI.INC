@@ -24,10 +24,11 @@ type
 			FList : TListView;
 		constructor Create(AParent : PControl; AName : String);
 		destructor Destroy; virtual;
-		procedure AddItem(AValue : String); virtual;
+		function AddItem(AValue : String) : PListItem; virtual;
 		function GetCurrent : PListItem; virtual;
 		procedure ClearItems; virtual;
 		procedure SetSorted(AValue : boolean); virtual;
+		procedure ScrollTo(AValue : String); virtual;
 	end;
 {$ENDIF}
 
@@ -63,9 +64,9 @@ begin
 	inherited Destroy;
 end;
 
-procedure TPopUpList.AddItem(AValue : String);
+function TPopUpList.AddItem(AValue : String) : PListItem;
 begin
-	FList.AddItem(AValue);
+	AddItem := FList.AddItem(AValue);
 end;
 
 procedure TPopUpList.SetSorted(AValue : boolean);
@@ -107,5 +108,9 @@ begin
 	FList.ClearItems;
 end;
 
+procedure TPopUpList.ScrollTo(AValue : String);
+begin
+	FList.ScrollTo(AValue);
+end;
 
 {$ENDIF}

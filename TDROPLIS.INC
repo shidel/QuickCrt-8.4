@@ -31,7 +31,7 @@ type
 		constructor Create(AParent : PControl; AName : String);
 		destructor Destroy; virtual;
 		procedure Draw; virtual;
-		procedure AddItem( AValue : String);  virtual;
+		function AddItem( AValue : String) : PListItem; virtual;
 		procedure SetSorted(AValue : boolean); virtual;
 		procedure SetCaption(AValue: String); virtual;
 		function GetCaption : String; virtual;
@@ -183,10 +183,12 @@ begin
 	inherited CheckLocal(AEvent);
 end;
 
-procedure TDropList.AddItem( AValue : String); 
+function TDropList.AddItem( AValue : String) : PListItem; 
 begin
 	if FList.FList.FItems.FindID(AValue) = nil then
-		FList.AddItem(AValue);
+		AddItem := FList.AddItem(AValue)
+	else
+		AddItem := nil;
 end;
 
 procedure TDropList.SetSorted(AValue : boolean);
@@ -197,6 +199,7 @@ end;
 procedure TDropList.SetCaption(AValue: String); 
 begin
 	FEdit.SetCaption(AValue);
+	FList.ScrollTo(AValue);
 end;
 
 function TDropList.GetCaption : String; 
