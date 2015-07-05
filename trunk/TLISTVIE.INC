@@ -172,6 +172,7 @@ var
 begin
 	inherited ApplyTheme(AConfig); 
 	AConfig^.GetInts('COLORS.HEADER', FHAttr, SizeOf(FHAttr) div SizeOf(Integer));
+	AConfig^.GetInts('COLORS.COLUMNS', FNAttr, SizeOf(FNAttr) div SizeOf(Integer));
 	if FColumnCount > 0 then 
 		for I := 0 to FColumnCount - 1 do with FColumns^[I] do begin
 			AConfig^.GetInts('COLUMN.' + IntStr(I) + '.COLOR', FColumns^[I].Colors, SizeOf(TTextAttrs) div SizeOf(Integer));

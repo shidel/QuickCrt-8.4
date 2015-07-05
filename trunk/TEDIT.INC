@@ -46,6 +46,7 @@ begin
 	inherited Create(AParent, AName);
 	FMaxLength := 255;
 	FUseCaption := False;
+	FTextAlign := True;
 	if GetBlink then
 		begin
 			FAttr.Hover := (FAttr.Normal and $0F) + (FAttr.Normal and $07) shl 4;
