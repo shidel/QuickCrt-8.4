@@ -246,6 +246,10 @@ interface
 	cmCut			= $0200;
 	cmCopy			= $0201;
 	cmPaste			= $0202;
+	cmFind			= $0203;
+	cmFindAgain		= $0204;
+	cmReplace		= $0205;
+	cmReplaceAll	= $0206;
 	
 	{ Special Commands }
 	cmCharMap		= $0300; 

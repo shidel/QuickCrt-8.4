@@ -52,7 +52,7 @@ const
 		'$003B=Semicolon',
 		'$0027=Single Quote',
 		'$0022=Double Quote',
-		'$002C=Coma',
+		'$002C=Comma',
 		'$002E=Period',
 		'$0060=Quote',
 		'$007E=Tilda',
