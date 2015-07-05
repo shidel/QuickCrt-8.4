@@ -8,7 +8,7 @@
 *)
 
 const
-	DefaultMappedCommandsMax = 32;
+	DefaultMappedCommandsMax = 33;
 	DefaultMappedCommands : array[0..DefaultMappedCommandsMax] of Str55 = (
 		'None=$0000',
 		'Break=$0063:M+$0104', 			{ Ctrl+C }
@@ -43,12 +43,13 @@ const
 		
 		'Cut=$0078:M+$0008,$0078:M+$0208',			{ Alt+X }
 		'Copy=$0063:M+$0008,$0063:M+$0208',			{ Alt+C }
-		'Paste=$0076:M+$0008,$0076:M+$0208'			{ Alt+V }
+		'Paste=$0076:M+$0008,$0076:M+$0208',		{ Alt+V }
+		'Find=$0066:M+$0008,$0066:M+$0208'			{ Alt+F } 
 		 
 	);
 	
 const
-	DefaultCommandNamesMax = 70;
+	DefaultCommandNamesMax = 74;
 	DefaultCommandNames : array[0..DefaultCommandNamesMax] of Str25 = (
 		{ System/Environment Commands }
 		'None=$0000',
@@ -99,6 +100,10 @@ const
 		'Cut=$0200',
 		'Copy=$0201',
 		'Paste=$0202',
+		'Find=$0203',
+		'FindAgain=$0204',
+		'Replace=$0205',
+		'ReplaceAll=$0206',		
 
 		{ Special Commands }
 		'CharMap=$0300',
@@ -113,7 +118,6 @@ const
 		'EditFile=$0309',
 		
 		'About=$0310',
-		
 		
 		{ Modal Commands }
 		'OK=$0400',
