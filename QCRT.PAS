@@ -533,6 +533,7 @@ interface
     
 	FirstMemAvail, FirstMaxAvail : longInt; { Initial Memory Available }
 	MinMemAvail, MinMaxAvail : LongInt;    { Lowest amount of memory available during execution }
+	KeyboardIgnore : word;     { Keyboard status flags to ignore }
 
 { Interface procedures }
   procedure AssignCrt(var F : Text);
@@ -571,6 +572,10 @@ interface
   procedure Delay( MS : Word );
   procedure Sound( Hz : Word );
   procedure NoSound;
+
+{ Keyboard Stuff }
+	function GetShiftCode : word;
+	procedure SetShiftCode(AValue : word);
 
 { Color Function to set Foreground and Background Colors at the same time. }
   procedure Color(Fore, Back : byte);
@@ -1653,7 +1658,7 @@ end;
       end;
       Event.What := evKeyDown;
       Event.InfoPtr := nil;
-      Event.ShiftCode := MemW[Seg0040:$0017];
+      Event.ShiftCode := MemW[Seg0040:$0017] and (not KeyboardIgnore);
       case Check101 of
         False : if KeypressedStd then begin
           Event.KeyCode := ReadKeyboardStd;
@@ -1789,6 +1794,7 @@ end;
       KeyCount   	:= 0;
       CommandMap	:= nil;
       CommandCount 	:= 0;
+      KeyboardIgnore := kbScrollLock or kbInsertLock or kbPauseFlag or kbNumsLock;
       IdleProc      := NullProc;
       PreWriteProc  := NullProc;
       PostWriteProc := NullProc;
@@ -4250,6 +4256,16 @@ end;
     MouseHomeX := ASettings.MouseHomeX;
     MouseHomeY := ASettings.MouseHomeY;
   end;
+  
+function GetShiftCode : word;
+begin
+	GetShiftCode := MemW[Seg0040:$0017];
+end;
+
+procedure SetShiftCode(AValue : word);
+begin
+	MemW[Seg0040:$0017] := AValue;
+end;
     
 begin
 	InitQCrtUnit; 
