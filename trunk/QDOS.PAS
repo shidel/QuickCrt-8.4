@@ -249,6 +249,9 @@ interface
   
   procedure PackTime(DateTime : TDateTime; var Value : LongInt);
   procedure UnPackTime(Value : LongInt; var DateTime : TDateTime);
+  
+  function NoTailDelim(APath : String) : String;
+  function TailDelim(APath : String) : String;
  
 implementation
 
@@ -1463,6 +1466,21 @@ begin
 		FileExtension := UCase(Copy(AFileName, I + 1, 3));
 end;
 
+function NoTailDelim(APath : String) : String;
+begin
+	if (Length(APath) > 0) and (APath[Length(APath)] <> '\') then
+		NoTailDelim := APath
+	else
+		NoTailDelim := Copy(APath, 1, Length(APath) -1 );
+end;
+
+function TailDelim(APath : String) : String;
+begin
+	if (Length(APath) > 0) and (APath[Length(APath)] = '\') then
+		TailDelim := APath
+	else
+		TailDelim := APath + '\';
+end;
 
 begin
   InitUnit;

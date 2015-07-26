@@ -97,7 +97,7 @@ begin
 	if not assigned(Application) then begin
 		Application := @Self;
 		GetDir(0, FOriginalPath);
-		ChDir(GetExePath);
+		ChDir(NoTailDelim(GetExePath));
 	end;
 	FLanguageID := 'en_US';
 	FClearWindow := False;
@@ -150,7 +150,7 @@ begin
 	
 	if Application = @Self then begin
 		{$I-}
-		Chdir(FOriginalPath);
+		Chdir(NoTailDelim(FOriginalPath));
 		{$I+}
 	end;
 	FInfo.Destroy;
